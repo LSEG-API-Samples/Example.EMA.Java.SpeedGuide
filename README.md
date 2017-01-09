@@ -169,7 +169,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 ## Authors
 
 * **Susana Chang** - Release 1.1.  *Initial work*
-* **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder*
+* **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder to generate FXML*
 
 ## License
 
