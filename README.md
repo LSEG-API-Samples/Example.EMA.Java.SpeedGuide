@@ -21,7 +21,7 @@ Optional software components:
 
 This package includes some convenient files which will enable the developer to quickly build and run the Speed Guide utility.  To build and run, the package includes convenient scripts (**_build.bat_**, **_build.ksh_**, **_run.bat_**, **_run.ksh_**).  
 
-Within each script contains:
+Within each script contains the following prerequsite section:
 
 ```
 The following batch file assumes the following environment:
