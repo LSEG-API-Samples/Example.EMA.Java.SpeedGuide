@@ -1,0 +1,25 @@
+/* SpeedGuide CSS */
+
+
+/*
+ * Status Pane
+ */
+#status-time {
+	-fx-fill: blue;
+	-fx-font-weight:bold;
+}
+
+#status-request {
+	-fx-fill: black;
+	-fx-font-weight: normal;
+}
+
+#status-response-success {
+	-fx-fill: darkgreen;
+	-fx-font-weight: normal;
+}
+
+#status-response-error {
+	-fx-fill: crimson;
+	-fx-font-weight: normal;
+}
