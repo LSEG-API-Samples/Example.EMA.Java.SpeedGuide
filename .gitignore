@@ -1,0 +1,3 @@
+*.class
+bin/com/thomsonreuters/ema/example/gui/SpeedGuide/view/application.css
+bin/com/thomsonreuters/ema/example/gui/SpeedGuide/view/SpeedGuideView.fxml
