@@ -171,8 +171,6 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 * **Susana Chang** - Release 1.1.  *Initial work*
 * **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder*
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
