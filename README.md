@@ -59,7 +59,7 @@ The package includes 2 components offering multiple ways to launch the tool.  Pa
 ### Launching the tool by double clicking on the icon:
 
 Double-clicking either the _.jar_ or _.exe_ file will not pass any required parameters to the application.  As such, the application 
-will present a [Connection Dialog](#usage) requesting for these connection parameters.  In either case, no console is involved thus no 
+will present a [Connection Dialog](## Usage) requesting for these connection parameters.  In either case, no console is involved thus no 
 additional messages, such as log messages, can be viewed.
 
 ### Launching the tool from the console:
@@ -96,7 +96,7 @@ If neither the --host nor --service is provided, the utility will **prompt the u
 
 Example: \> **SpeedGuide --host=elektron:14002 --service=ELEKTRON_AD --user=testuser**
 
-[usage]##Usage
+## Usage
 
 When launching the utility specifying insufficient command-line options, the user will be presented with a Connection dialog:
 
