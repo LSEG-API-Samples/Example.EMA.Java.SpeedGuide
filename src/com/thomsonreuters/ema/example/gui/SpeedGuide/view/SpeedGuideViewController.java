@@ -328,29 +328,31 @@ public class SpeedGuideViewController implements Initializable
     	updateRic(ric);
     	textArea.setText(pageStr);
 
-    	// before adding the new page, check
-    	int extrapages = (m_pageTotal - m_pageCount) ;
-    	if (m_debug) System.out.println("extrapages=" + extrapages + " pageTotal=" + m_pageTotal +" pageCount=" + m_pageCount +
-    									" listOfPages.size=" + m_listOfPages.size());
-    	if ( extrapages > 0 ) {
-    		// remove pages
-    		int countSubs = 0;
-    		for (int i=(m_pageTotal-1); m_pageCount <=i; i--) {
-    			if (m_debug) System.out.println("REMOVE page num="+i + " RIC=" + m_listOfRICs.get(i)+ "     _listOfPages.size=" + m_listOfPages.size());
-    			m_listOfPages.remove(i);
-    			m_listOfRICs.remove(i);
-    			countSubs++;
-    		}
-    		m_pageTotal = m_pageTotal - countSubs;
-    		if (m_debug) System.out.println("countSubs="+ countSubs +" _pageTotal="+m_pageTotal);
+    	if ( !ric.isEmpty()) {
+    		// before adding the new page, check
+	    	int extrapages = (m_pageTotal - m_pageCount) ;
+	    	if (m_debug) System.out.println("extrapages=" + extrapages + " pageTotal=" + m_pageTotal +" pageCount=" + m_pageCount +
+	    									" listOfPages.size=" + m_listOfPages.size());
+	    	if ( extrapages > 0 ) {
+	    		// remove pages
+	    		int countSubs = 0;
+	    		for (int i=(m_pageTotal-1); m_pageCount <=i; i--) {
+	    			if (m_debug) System.out.println("REMOVE page num="+i + " RIC=" + m_listOfRICs.get(i)+ "     _listOfPages.size=" + m_listOfPages.size());
+	    			m_listOfPages.remove(i);
+	    			m_listOfRICs.remove(i);
+	    			countSubs++;
+	    		}
+	    		m_pageTotal = m_pageTotal - countSubs;
+	    		if (m_debug) System.out.println("countSubs="+ countSubs +" _pageTotal="+m_pageTotal);
+	    	}
+
+	    	m_mapOfPages.put(ric, pageStr);
+	    	m_listOfPages.add(pageStr);
+	    	m_listOfRICs.add(ric);
+
+	    	m_pageTotal++;
+	    	m_pageCount = m_pageTotal;
     	}
-
-    	m_mapOfPages.put(ric, pageStr);
-    	m_listOfPages.add(pageStr);
-    	m_listOfRICs.add(ric);
-
-    	m_pageTotal++;
-    	m_pageCount = m_pageTotal;
     }
 
 

@@ -436,6 +436,7 @@ class StatusLogHandler extends StreamHandler
     	{
     		final String TOKEN_TEXT = "Text:";
     		final String TOKEN_DETAILS = "Error text";
+    		final String TOKEN_STATE = "State:";
 
     		// Ignore the error reporting no EmaConfig.xml found
     		if ( !record.getMessage().contains("EmaConfig.xml"))
@@ -443,24 +444,27 @@ class StatusLogHandler extends StreamHandler
         		String[] lines = record.getMessage().split("\n");
 
         		String text = "";
-        		String details = "";
         		for (String line : lines)
         		{
         			if (line.contains(TOKEN_TEXT))
-        				text = line.substring(line.indexOf(TOKEN_TEXT)+TOKEN_TEXT.length()).trim();
-        			if (line.contains(TOKEN_DETAILS))
-        				details = line.substring(line.indexOf(TOKEN_DETAILS)+TOKEN_DETAILS.length()).trim();
+        				text += line.substring(line.indexOf(TOKEN_TEXT)+TOKEN_TEXT.length()).trim() + SpeedGuide.NEWLINE;
+        			else if (line.contains(TOKEN_DETAILS))
+        				text += line.substring(line.indexOf(TOKEN_DETAILS)+TOKEN_DETAILS.length()).trim() + SpeedGuide.NEWLINE;
+        			else if (line.contains(TOKEN_STATE))
+        				text += line.substring(line.indexOf(TOKEN_STATE)+TOKEN_STATE.length()).trim() + SpeedGuide.NEWLINE;
         		}
 
     	        // Send errors to GUI status
-        		if ( !details.isEmpty() )
-        			m_viewController.updateStatus(details, StatusIndicator.RESPONSE_ERROR);
-        		else if ( !text.isEmpty() )
+        		if (!text.isEmpty() ) {
+        			int pos = text.lastIndexOf(SpeedGuide.NEWLINE);
+        			if ( pos >= 0)
+        				text = text.substring(0, pos);
+
         			m_viewController.updateStatus(text, StatusIndicator.RESPONSE_ERROR);
+        		}
         		else
         			m_viewController.updateStatus(record.getMessage(), StatusIndicator.RESPONSE_ERROR);
     		}
-
     	}
         super.publish(record);
     }
@@ -556,6 +560,7 @@ public class SpeedGuideConsumer implements Runnable
 	private void connectConsumer()
 	{
 		String connectStr = "Attempting to connect to [" + _host + "]";
+		m_viewController.updateTxtArea("", "Connection in progress...");
 
 		_connecting.set(true);
 		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
@@ -571,6 +576,7 @@ public class SpeedGuideConsumer implements Runnable
 											}
 
 											public void onInvalidUsage(String text) {
+										    	m_viewController.updateTxtArea("", "Connection Failed.");
 												_connected.set(false);
 											}
 										});
@@ -639,6 +645,7 @@ public class SpeedGuideConsumer implements Runnable
 					    public void onRefreshMsg(RefreshMsg refreshMsg, OmmConsumerEvent consumerEvent)
 					    {
 					    	m_viewController.updateStatus(refreshMsg.state().statusText(), StatusIndicator.RESPONSE_SUCCESS);
+					    	m_viewController.updateTxtArea("", "");
 					    	_connected.set(true);
 					    	subscribe("THOMSONREUTERS");
 					    }
