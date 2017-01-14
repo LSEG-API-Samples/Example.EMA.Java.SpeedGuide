@@ -7,7 +7,7 @@ The Speed Guide utility allows users and developers, who do not have access to *
 
 Required software components:
 
-* [Elektron Message API](https://developers.thomsonreuters.com/elektron/elektron-sdk-java) - Thomson Reuters interface to the Elektron Market Data environment
+* [Elektron Message API](https://developers.thomsonreuters.com/elektron/elektron-sdk-java) (1.0.8 or greater) - Thomson Reuters interface to the Elektron Market Data environment
 * [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8
 
 Optional software components:
