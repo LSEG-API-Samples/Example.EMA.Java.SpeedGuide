@@ -105,6 +105,9 @@ When launching the utility specifying insufficient command-line options, the use
 The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be
 made to your specified server, the utility will launch the root Speed Guide item, i.e. **THOMSONREUTERS**.
 
+**Note**: While the utility will launch the "THOMSONREUTERS" RIC, which represents the root code of the Speed Guide pages, the utility
+	  is extremely useful for developers to visualize any other instrument available within Elektron.
+
 ![main](images/main.png)
 
 ### Buttons
