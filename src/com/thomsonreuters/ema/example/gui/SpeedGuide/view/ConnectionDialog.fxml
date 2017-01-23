@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="layout" prefHeight="226.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection">
+   <children>
+      <VBox alignment="CENTER_LEFT" layoutY="89.0" prefHeight="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Elektron/TREP Connection parameters:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+      <GridPane hgap="10.0" layoutX="27.0" layoutY="54.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="54.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="58.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="156.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="263.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Host:" />
+            <Label text="Service:" GridPane.rowIndex="1" />
+            <Label text="User:" GridPane.rowIndex="2" />
+            <Label text="Required. Hostname/IP of Elektron server.&#10;Syntax: hostname:port.  Eg: elektron:14002" wrapText="true" GridPane.columnIndex="2" />
+            <Label text="Required. Market Data service.&#10;Eg: ELEKTRON_DD" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="Optional. Login username.&#10;Default: desktop login" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="host" onKeyReleased="#onKeyReleased" GridPane.columnIndex="1" />
+            <TextField fx:id="service" onKeyReleased="#onKeyReleased" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="user" onKeyReleased="#onKeyReleased" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Button fx:id="connect" layoutX="423.0" layoutY="186.0" mnemonicParsing="false" onAction="#clickedConnect" prefHeight="25.0" prefWidth="78.0" text="Connect" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+   </children>
+</AnchorPane>

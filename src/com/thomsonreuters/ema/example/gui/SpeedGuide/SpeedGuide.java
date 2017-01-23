@@ -1,5 +1,7 @@
 package com.thomsonreuters.ema.example.gui.SpeedGuide;
 
+import java.awt.SplashScreen;
+
 import com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection;
 import com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideViewController;
 import javafx.application.Application;
@@ -9,8 +11,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
+// SpeedGuide
+//
+// Main class driving the application.  The SpeedGuide class represents our entry point for our UI
+// and launching the EMA Consumer thread to manage all market data activity.  The SpeedGuide utilizes
+// the FXML specification to drive the UI components.  All FXML definitions are launched at startup within
+// this class.
 public class SpeedGuide extends Application
 {
+	final String HOST_PARAM = "host";
+	final String SERVICE_PARAM = "service";
+	final String USER_PARAM = "user";
+
 	public enum StatusIndicator
 	{
 		REQUEST,
@@ -21,70 +33,82 @@ public class SpeedGuide extends Application
 	public static final String NEWLINE = System.getProperty("line.separator");
 	public static final String VER_CODE = "2.0";
     public SpeedGuideConsumer m_consumer = new SpeedGuideConsumer();
-	private SpeedGuideConnection m_connection = new SpeedGuideConnection();
     private boolean m_debug = false;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		try {
+			final SplashScreen splash = SplashScreen.getSplashScreen();
 
-        // Determine if we passed anything on the cmd line
-        parseCmdLine();
+	        // Determine if we passed anything on the cmd line
+	        parseCmdLine();
 
-        FXMLLoader loader = null;
-        AnchorPane layout = null;
+	        // Define our controllers
+	        SpeedGuideViewController viewController = loadFXMLController("view/SpeedGuideView.fxml");
+	        SpeedGuideConnection connectionController = loadFXMLController("view/ConnectionDialog.fxml");
 
-        try {
-			// Load our view (from an fxml layout)
-			loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("view/SpeedGuideView.fxml"));
-			layout = loader.load();
-        } catch (Exception e) {
-			System.out.println("Exception in Start loading FXML resource: " + e);
+			// Wire up our Model/View/Controllers
+			viewController.setConnectionViewController(connectionController);
+			viewController.setDebug(m_debug);
+			viewController.defineControlBindings(m_consumer);
+
+			// Notify our consumer some setup information
+	        m_consumer.setDebug(m_debug);
+	        m_consumer.setViewController(viewController);
+
+			// Define the main viewing scene,
+	        AnchorPane layout = viewController.getLayout();
+			Scene scene = new Scene(layout, layout.getPrefWidth(), layout.getPrefHeight());
+
+			// Prevent the user from resizing the window too small
+			primaryStage.setMinHeight(layout.getMinHeight());
+			primaryStage.setMinWidth(layout.getMinWidth());
+
+			// Assign to our main stage and show the application to the end user
+			primaryStage.setTitle("Speed Guide");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+
+			// Set up our EMA Consumer and launch a thread to run...
+	        Thread t = new Thread(m_consumer);
+	        t.start();
+
+	    	Application.Parameters params = getParameters();
+	    	connectionController.initialize(params.getNamed().get(HOST_PARAM),
+	    						  			params.getNamed().get(SERVICE_PARAM),
+	    						  			params.getNamed().get(USER_PARAM),
+	    						  			m_consumer);
+
+	        // Attempt to Connect into Elektron
+			if ( splash != null )
+				splash.close();
+	        connectionController.connect();
+		} catch  (Exception e) {
+			System.out.print("Exception in Application Start: ");
 			e.printStackTrace();
 			stop();
 		}
-
-		// Wire up our Model/View/Controller
-		SpeedGuideViewController viewController = loader.<SpeedGuideViewController>getController();
-		viewController.setConnection(m_connection);
-		viewController.setDebug(m_debug);
-		viewController.defineControlBindings(m_consumer);
-
-		// Notify our consumer some setup information
-        m_consumer.setDebug(m_debug);
-        m_consumer.setViewController(viewController);
-
-		// Define the main viewing scene,
-		Scene scene = new Scene(layout, layout.getPrefWidth(), layout.getPrefHeight());
-
-		// Prevent the user from resizing the window too small
-		primaryStage.setMinHeight(layout.getMinHeight());
-		primaryStage.setMinWidth(layout.getMinWidth());
-
-		// Assign to our main stage and show the application to the end user
-		primaryStage.setTitle("Speed Guide");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
-		// Set up our EMA Consumer and launch a thread to run...
-        Thread t = new Thread(m_consumer);
-        t.start();
-
-        // Attempt to Connect into Elektron
-        m_connection.connect();
 	}
 
-    @Override
-    public void stop() {
-        System.exit(0);
-    }
+
+	private <T> T loadFXMLController(String resource)
+	{
+        try {
+			// Load our view (from an fxml layout)
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource(resource));
+			loader.load();
+			return(loader.getController());
+        } catch (Exception e) {
+			System.out.print("Exception in loading FXML resource: " + resource + ": ");
+			e.printStackTrace();
+			stop();
+		}
+		return null;
+	}
 
     private void parseCmdLine() throws Exception
     {
-    	final String HOST_PARAM = "host";
-    	final String SERVICE_PARAM = "service";
-    	final String USER_PARAM = "user";
-
     	Application.Parameters params = getParameters();
     	if ( params.getRaw().contains("--h") || params.getRaw().contains("--help") ||
     		 params.getNamed().containsKey("h") || params.getNamed().containsKey("help"))
@@ -109,16 +133,16 @@ public class SpeedGuide extends Application
 
     	m_debug = params.getRaw().contains("--d") || params.getRaw().contains("--debug") ||
     			 params.getNamed().containsKey("d") || params.getNamed().containsKey("debug");
-
-    	m_connection.initialize(params.getNamed().get(HOST_PARAM),
-    							params.getNamed().get(SERVICE_PARAM),
-    							params.getNamed().get(USER_PARAM),
-    							m_consumer);
     }
 
-	public static void main(String[] args) {
-		System.out.println("Java Ver: " + System.getProperty("java.specification.version") + " (" + System.getProperty("sun.arch.data.model") + "-bit)");
-		System.out.println("JavaFX Ver: " + com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
+    @Override
+    public void stop() {
+        System.exit(0);
+    }
+
+	public static void main(String[] args) throws Exception {
+		System.out.println("Java Version: " + System.getProperty("java.runtime.version") + " (" + System.getProperty("sun.arch.data.model") + "-bit)");
+		System.out.println("JavaFX Version: " + com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
 
 		launch(args);
 	}

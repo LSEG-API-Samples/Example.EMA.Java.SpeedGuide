@@ -1,5 +1,12 @@
 /* SpeedGuide CSS */
 
+/*
+ * Service ComboBox
+ */
+.combo-box .cell{
+    -fx-font: 15px "System";
+}
+
 
 /*
  * Status Pane

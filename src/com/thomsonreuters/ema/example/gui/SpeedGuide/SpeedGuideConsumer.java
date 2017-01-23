@@ -39,9 +39,6 @@ import com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideViewControll
 import com.thomsonreuters.ema.access.DataType.DataTypes;
 import com.thomsonreuters.ema.rdm.EmaRdm;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
 class ConsumerClient implements OmmConsumerClient
 {
 	private RmtesBuffer _rmtesBuffer = EmaFactory.createRmtesBuffer();
@@ -126,9 +123,7 @@ class ConsumerClient implements OmmConsumerClient
 		}
 
 		if (m_debug) System.out.println();
-
-		m_viewController.updateRic(item);
-		m_viewController.updateStatus(status, StatusIndicator.RESPONSE_ERROR);
+		m_viewController.updateStatus(status, StatusIndicator.RESPONSE_ERROR, item);
 	}
 
 	public void onGenericMsg(GenericMsg genericMsg, OmmConsumerEvent consumerEvent){}
@@ -168,7 +163,21 @@ class ConsumerClient implements OmmConsumerClient
 			{
 				switch (fieldEntry.fieldId())
 				{
-					case 315 : // the Page record rows
+					case 215 : // Page record rows (14X64)
+					case 216 :
+					case 217 :
+					case 218 :
+					case 219 :
+					case 220 :
+					case 221 :
+					case 222 :
+					case 223 :
+					case 224 :
+					case 225 :
+					case 226 :
+					case 227 :
+					case 228 :
+					case 315 : // Page record rows (25x80)
 					case 316 :
 					case 317 :
 					case 318 :
@@ -496,8 +505,7 @@ public class SpeedGuideConsumer implements Runnable
 	private String _user;
 	private boolean _debug = false;
 	private StatusLogHandler m_statusLogHandler;
-	public BooleanProperty _connecting = new SimpleBooleanProperty(false);
-	public BooleanProperty _connected = new SimpleBooleanProperty(false);
+
 	private SpeedGuideViewController m_viewController;
 
 	public void setViewController(SpeedGuideViewController viewController) {
@@ -559,10 +567,10 @@ public class SpeedGuideConsumer implements Runnable
 
 	private void connectConsumer()
 	{
-		String connectStr = "Attempting to connect to [" + _host + "]";
-		m_viewController.updateTxtArea("", "Connection in progress...");
+		_launchConsumer = false;
 
-		_connecting.set(true);
+		String connectStr = "Attempting to connect to [" + _host + "]";
+		m_viewController.setConnection(false, true, "Connection in progress...");
 		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
 		OmmConsumerConfig config = EmaFactory.createOmmConsumerConfig().host(_host);
 
@@ -576,12 +584,10 @@ public class SpeedGuideConsumer implements Runnable
 											}
 
 											public void onInvalidUsage(String text) {
-										    	m_viewController.updateTxtArea("", "Connection Failed.");
-												_connected.set(false);
+												m_viewController.setConnection(false, false, "Connection Failed.");
 											}
 										});
 
-		_connecting.set(false);
 		ReqMsg reqMsg = EmaFactory.createReqMsg();
 
 		// Register interest in the Directory information to capture the list of Services for this connection
@@ -645,15 +651,12 @@ public class SpeedGuideConsumer implements Runnable
 					    public void onRefreshMsg(RefreshMsg refreshMsg, OmmConsumerEvent consumerEvent)
 					    {
 					    	m_viewController.updateStatus(refreshMsg.state().statusText(), StatusIndicator.RESPONSE_SUCCESS);
-					    	m_viewController.updateTxtArea("", "");
-					    	_connected.set(true);
+					    	m_viewController.setConnection(true, false, "");
 					    	subscribe("THOMSONREUTERS");
 					    }
 					    public void onUpdateMsg(UpdateMsg updateMsg, OmmConsumerEvent consumerEvent){}
 					    public void onStatusMsg(StatusMsg statusMsg, OmmConsumerEvent consumerEvent){}
 				});
-
-		_launchConsumer = false;
 	}
 
 	/**
@@ -680,10 +683,11 @@ public class SpeedGuideConsumer implements Runnable
     {
     	while(true)
         {
-        	long time = (_connected.get() ? 1000 : 10);
+        	long time = (m_viewController.isConnected() ? 1000 : 10);
             try {
             	if (_launchConsumer)
-            		connectConsumer();
+               		connectConsumer();
+
                 Thread.sleep(time);
             } catch(InterruptedException ie){}
         }

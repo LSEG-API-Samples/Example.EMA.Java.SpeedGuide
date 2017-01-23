@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="compile" name="Build and Run SpeedGuide using the Apache Ant utility">
+    <!--ANT 1.7 is required-->
+
+    <!--Define environment properties.  Note: this build script expects the following environment:
+            JAVA_HOME - Root directory of your JDK 8 environment
+            ELEKTRON_JAVA_HOME - Root directory of your (EMA) Elektron Java API installation-->
+            
+    <property environment="env"/>
+	<property name="bin.dir" value="./bin"/>
+	<property name="src.dir" value="./src"/>      
+	<property name="emaj.libs" value="${env.ELEKTRON_JAVA_HOME}/Ema/Libs"/>       
+	<property name="etaj.libs" value="${env.ELEKTRON_JAVA_HOME}/Eta/Libs"/>
+    <property name="java.libs" value="${env.JAVA_HOME}/lib"/>
+    <property name="app.resource" value="com/thomsonreuters/ema/example/gui/SpeedGuide/view"/>
+    
+	<target name="init">
+		<echo message="Creating a directory for the compiler output" />
+        <mkdir dir="${bin.dir}"/>
+    </target>
+
+	<target name="clean">
+		<echo message="Cleaning up old build output" />
+        <delete dir="${bin.dir}"/>
+    </target>    
+    
+	<path id="app.classpath">
+        <pathelement path="${bin.dir}"/>
+        <pathelement path="${emaj.libs}/ema.jar"/>        
+        <pathelement path="${emaj.libs}/apache/commons-lang-2.6.jar"/>
+        <pathelement path="${emaj.libs}/apache/commons-configuration-1.10.jar"/>
+        <pathelement path="${emaj.libs}/apache/commons-logging-1.2.jar"/>
+    	<pathelement path="${emaj.libs}/apache/org.apache.commons.collections.jar"/>
+        <pathelement path="${emaj.libs}/SLF4J/slf4j-1.7.12/slf4j-api-1.7.12.jar"/>    
+        <pathelement path="${etaj.libs}/upa.jar"/>
+        <pathelement path="${etaj.libs}/upaValueAdd.jar"/>
+        <pathelement path="${java.libs}/ant-javafx.jar"/>
+    </path> 
+    
+    <!--Used for debugging - can echo this property to display classpath-->
+    <pathconvert property="classpathProp" refid="app.classpath"/>
+    
+    <target name="compile" depends="init">        
+		<echo message="Building SpeedGuide..."/>
+        <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
+            <classpath refid="app.classpath"/>
+        </javac>
+        <echo message="copying..."/>
+        <copy todir="${bin.dir}/${app.resource}">
+            <fileset dir="${src.dir}/${app.resource}" includes="**/*.fxml,**/*.css,images/*"/>
+        </copy>
+    </target>
+</project>
