@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -223,8 +224,11 @@ public class SpeedGuideViewController implements Initializable
 
 	@FXML
 	private void selectedService() {
-    	m_consumer.setService(services.getSelectionModel().getSelectedItem().toString());
-   		m_consumer.subscribe(ric.getText().trim());
+		String selectedItem = services.getSelectionModel().getSelectedItem();
+		if ( selectedItem != null) {
+	    	m_consumer.setService(services.getSelectionModel().getSelectedItem().toString());
+	   		m_consumer.subscribe(ric.getText().trim());
+		}
 	}
 
     /**
