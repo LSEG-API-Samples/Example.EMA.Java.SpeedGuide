@@ -1,7 +1,7 @@
 # Speed Guide
 Created by Platform Services GitHub tool on Mon Jan 23 2017
 
-The Speed Guide utility allows users and developers, who do not have access to **Thomson Reuters Eikon**, a simple and quick way to easily browse the content available within the Thomeons Reuters Elektron service.
+The Speed Guide utility allows users and developers, who do not have access to **Thomson Reuters Eikon**, a simple and quick way to easily browse the content available within the Thomson Reuters Elektron service.
 
 ## Prerequisites
 
