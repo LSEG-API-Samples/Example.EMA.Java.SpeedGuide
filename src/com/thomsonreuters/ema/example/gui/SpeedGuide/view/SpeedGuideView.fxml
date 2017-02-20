@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="layout" minHeight="350.0" minWidth="620.0" prefHeight="710.0" prefWidth="730.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideViewController">
+<AnchorPane fx:id="layout" minHeight="350.0" minWidth="620.0" prefHeight="710.0" prefWidth="730.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideViewController">
    <fx:define>
        <Image fx:id="homeImage" url="@mbri-home2.png" />
        <Image fx:id="nextImage" url="@mbri-right.png" />
@@ -76,9 +76,9 @@
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
-                  <Button fx:id="submit" mnemonicParsing="false" onAction="#clickedSubmit" text="Submit">
+                  <Button fx:id="submit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickedSubmit" prefHeight="30.0" prefWidth="64.0" text="Submit">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="13.0" />
                      </font></Button>
                   <Region prefHeight="25.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
                      <opaqueInsets>
@@ -90,9 +90,9 @@
                   </Region>
                   <Label fx:id="servicesLabel" text="Available Services" />
                   <ComboBox fx:id="services" onAction="#selectedService" prefHeight="30.0" prefWidth="153.0" />
-                  <Button fx:id="connect" mnemonicParsing="false" onAction="#clickedConnect" text="Connect">
+                  <Button fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickedConnect" prefHeight="30.0" prefWidth="72.0" text="Connect">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="13.0" />
                      </font></Button>
                </children>
                <VBox.margin>

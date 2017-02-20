@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="layout" prefHeight="226.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection">
+<AnchorPane fx:id="layout" prefHeight="226.0" prefWidth="612.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection">
    <children>
       <VBox alignment="CENTER_LEFT" layoutY="89.0" prefHeight="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,9 +27,9 @@
       </VBox>
       <GridPane hgap="10.0" layoutX="27.0" layoutY="54.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="54.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="58.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="156.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="263.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="55.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="239.0" minWidth="10.0" prefWidth="191.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="10.0" prefWidth="306.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,10 +40,10 @@
             <Label text="Host:" />
             <Label text="Service:" GridPane.rowIndex="1" />
             <Label text="User:" GridPane.rowIndex="2" />
-            <Label text="Required. Hostname/IP of Elektron server.&#10;Syntax: hostname:port.  Eg: elektron:14002" wrapText="true" GridPane.columnIndex="2" />
-            <Label text="Required. Market Data service.&#10;Eg: ELEKTRON_DD" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label text="Optional. Login username.&#10;Default: desktop login" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <TextField fx:id="host" onKeyReleased="#onKeyReleased" GridPane.columnIndex="1" />
+            <Label prefHeight="34.0" prefWidth="306.0" text="Required. Hostname/IP of Elektron server.&#10;Syntax: hostname:port.  Eg: elektron:14002" wrapText="true" GridPane.columnIndex="2" />
+            <Label prefHeight="34.0" prefWidth="305.0" text="Required. Market Data service.&#10;Eg: ELEKTRON_DD" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label prefHeight="34.0" prefWidth="305.0" text="Optional. Login username.&#10;Default: desktop login" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="host" onKeyReleased="#onKeyReleased" prefHeight="25.0" prefWidth="184.0" GridPane.columnIndex="1" />
             <TextField fx:id="service" onKeyReleased="#onKeyReleased" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="user" onKeyReleased="#onKeyReleased" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
