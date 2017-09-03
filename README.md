@@ -37,7 +37,7 @@ Once setup, you can build and run the utility.
 
 The Speed Guide utility allows users and developers who do not have access to the Eikon application to browse the contents available from Elektron.
 
-When building Elektron Market Data consumers, developers often need a list of RICs (Reuters Instrument Codes for a certain market, exchange, or instrument type. The Speed Guide utility is a tool to discover those RICs.  In addition, provides a simple way to easily navigate and provide a better understanding of the organization of the data which includes more complex structures such as Option Chains, Indices, etc.
+When building Elektron Market Data consumers, developers often need a list of RICs (Reuters Instrument Codes) for a certain market, exchange, or instrument type. The Speed Guide utility is a tool to discover those RICs.  In addition, provides a simple way to easily navigate and provide a better understanding of the organization of the data which includes more complex structures such as Option Chains, Indices, etc.
 
 The utility registers for Snapshot only data content (i.e, non-streaming).
 
