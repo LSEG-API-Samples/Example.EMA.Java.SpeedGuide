@@ -503,6 +503,8 @@ public class SpeedGuideConsumer implements Runnable
 	private String _host;
 	private String _service;
 	private String _user;
+	private String _appId;
+	private String _position;
 	private boolean _debug = false;
 	private StatusLogHandler m_statusLogHandler;
 
@@ -544,14 +546,17 @@ public class SpeedGuideConsumer implements Runnable
 		}
 	}
 
-	public void defineConsumer(String host, String service, String user)
+	public void defineConsumer(String host, String service, String user, String appId, String position)
 	{
 		_host = host.trim();
 		_service = service.trim();
 		_user = user.trim();
+		_appId = appId.trim();
+		_position = position.trim();
 
 		String userName = (_user.isEmpty() ? "<Desktop Login>" : "user");
-        if (_debug) System.out.println("Connecting to Elektron @ host:[" + _host + "] service: [" + _service + "] User: [" + userName +"]");
+        if (_debug) System.out.println("Connecting to Elektron @ host:[" + _host + "] service: [" + _service + "] User: [" + 
+        								userName +"] applicationID: [" + _appId + "] position: [" + _position + "]");
         _launchConsumer = true;
 	}
 
@@ -574,8 +579,10 @@ public class SpeedGuideConsumer implements Runnable
 		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
 		OmmConsumerConfig config = EmaFactory.createOmmConsumerConfig().host(_host);
 
-		// We have to set the user in this fashion because a blank user may not default to the workstation login
+		// We have to set the user/appId/position in this fashion because a blank value may not default correctly.
 		if ( !_user.isEmpty() ) config.username(_user);
+		if ( !_appId.isEmpty() ) config.applicationId(_appId);
+		if ( !_position.isEmpty() ) config.position(_position);
 
 		_consumer  = EmaFactory.createOmmConsumer(config,
 										new OmmConsumerErrorClient() {

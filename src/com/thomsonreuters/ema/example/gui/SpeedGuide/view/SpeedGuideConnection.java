@@ -24,16 +24,20 @@ public class SpeedGuideConnection
 {
 	class Connection
 	{
-		public void setConnection(String host, String service, String user)
+		public void setConnection(String host, String service, String user, String appId, String position)
 		{
 			_host = host==null ? "" : host.trim();
 			_service = service==null ? "" : service.trim();
 			_user = user==null ? "" : user.trim();
+			_appId = appId==null ? "" : appId.trim();
+			_position = position==null ? "" : position.trim();
 		}
 
 		public String _host;
 		public String _service;
 		public String _user;
+		public String _appId;
+		public String _position;
 	}
 
 	Stage m_dialog = new Stage();
@@ -43,6 +47,8 @@ public class SpeedGuideConnection
 	@FXML private TextField		host;
 	@FXML private TextField		service;
 	@FXML private TextField		user;
+	@FXML private TextField		appId;
+	@FXML private TextField		position;
 	@FXML private Button		connect;
 
 	// Connection/registration parameters
@@ -51,8 +57,8 @@ public class SpeedGuideConnection
 	// EMA consumer
 	SpeedGuideConsumer	m_consumer;
 
-	public void initialize(String hostname, String serviceName, String user, SpeedGuideConsumer consumer) {
-		m_connection.setConnection(hostname, serviceName, user);
+	public void initialize(String hostname, String serviceName, String user, String appId, String position, SpeedGuideConsumer consumer) {
+		m_connection.setConnection(hostname, serviceName, user, appId, position);
 		m_consumer = consumer;
 
 		// Define the main viewing scene,
@@ -71,8 +77,8 @@ public class SpeedGuideConnection
 	@FXML
 	private void clickedConnect() {
     	m_dialog.close();
-    	m_connection.setConnection(host.getText(), service.getText(), user.getText());
-    	m_consumer.defineConsumer(m_connection._host, m_connection._service, m_connection._user);
+    	m_connection.setConnection(host.getText(), service.getText(), user.getText(), appId.getText(), position.getText());
+    	m_consumer.defineConsumer(m_connection._host, m_connection._service, m_connection._user, m_connection._appId, m_connection._position);
 	}
 
 	@FXML
@@ -86,7 +92,7 @@ public class SpeedGuideConnection
 		if ( m_connection._host.isEmpty() || m_connection._service.isEmpty() )
     		connectionDialog();
     	else
-    		m_consumer.defineConsumer(m_connection._host, m_connection._service, m_connection._user);
+    		m_consumer.defineConsumer(m_connection._host, m_connection._service, m_connection._user, m_connection._appId, m_connection._position);
 	}
 
 	public void connectionDialog()
@@ -94,6 +100,8 @@ public class SpeedGuideConnection
 		host.setText(m_connection._host);
 		service.setText(m_connection._service);
 		user.setText(m_connection._user);
+		appId.setText(m_connection._appId);
+		position.setText(m_connection._position);
 
 		m_dialog.showAndWait();
     }
