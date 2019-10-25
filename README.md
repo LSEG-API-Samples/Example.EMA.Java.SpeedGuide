@@ -62,7 +62,8 @@ At the console, you can pass command-line parameters to the utility:
                             Eg: ELEKTRON_AD.
     --user=userName         Optional. DACS User name required if authentication is enabled on server.
                             Note: if no user name is provided, the utility will use your desktop login
-    --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.                                 Application ID has no default.
+    --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.
+                            Application ID has no default.
     --position=Position     Optional. DACS Position if authentication is enabled on server.
                             Position has no default.
         
@@ -139,7 +140,9 @@ To demonstrate, we manually entered the Nasdaq Top 25 index _.AV.O_:
 
 ![Chain](images/Chain.png)
 
-We can see from above, the record contains a preset number of elements (1-14) and the ability to pull up the next group of elements within the _next link_.  Feel free to navigate through the guide to discover many other assets and data elements offered by Refinitiv.
+We can see from above, the record contains a preset number of elements (1-14) and the ability to pull up the next group of elements within the _next link_.  For a detailed outline of Chains, refer to the article: [Simple Chain Objects](https://developers.refinitiv.com/article/simple-chain-objects-ema-part-1) within the Developer Community.
+
+Feel free to navigate through the guide to discover many other assets and data elements offered by Refinitiv.
 
 # Solution Code
 
