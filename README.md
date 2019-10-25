@@ -1,8 +1,6 @@
 # Speed Guide
 The Speed Guide utility allows users and developers, who do not have access to **Refinitiv Eikon**, a simple and quick way to easily browse the streaming services available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
 
-[TOC]
-
 
 # Overview
 
