@@ -1,41 +1,14 @@
 # Speed Guide
-The Speed Guide utility allows users and developers, who do not have access to **Refinitiv Eikon**, a simple and quick way to easily browse the content available within the Refinitiv Elektron service.  The following guide provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
+The Speed Guide utility allows users and developers, who do not have access to **Refinitiv Eikon**, a simple and quick way to easily browse the streaming services available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
 
-## Prerequisites
-
-Required software components:
-
-* [Elektron Message API](https://developers.refinitiv.com/elektron/elektron-sdk-java) (1.2 or greater) - Refinitiv interface to the Elektron Market Data environment
-* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8
-
-Optional software components:
-
-* [Eclipse](https://www.eclipse.org/efxclipse/install.html) - IDE for Java development (tested)
-* Other IDE's such as: [NetBeans](https://netbeans.org/), [Intellij IDEA](https://www.jetbrains.com/idea/)
-* [JavaFX Scene Builder](http://gluonhq.com/labs/scene-builder/) - UI to author JavaFX GUI-based applications
-
-
-## Getting Started
-
-This package includes some convenient files which will enable the developer to quickly build and run the Speed Guide utility.  To build, the package includes the **_build.xml_** Ant file.  Alternatively, the scripts (**_build.bat_**/**_build.ksh_**) are provided.  To run, use the convenient scripts (**_run.bat_**/ **_run.ksh_**).  
-
-Within each script contains the following prerequisite section:
-
-```
-The following batch file assumes the following environment:
-
-   JAVA_HOME          - Root directory of your JDK 8 environment
-   ELEKTRON_JAVA_HOME - Root directory of your (EMA) Elektron Java API installation
-```
-
-Once setup, you can build and run the utility.
+[TOC]
 
 
 # Overview
 
-The Speed Guide utility allows users and developers who do not have access to the Eikon application to browse content available from Elektron.
+The Speed Guide utility allows users and developers who do not have access to the Eikon Desktop application to browse streaming content available from Refinitiv's Data Platform.  Streaming content can be accessed within ERT in Cloud or directly to your deployed Elektron services.
 
-When building Elektron Market Data consumers, developers often need a list of RICs (Reuters Instrument Codes) for certain market, exchange, or instrument types. The Speed Guide utility is a tool to discover those RICs.  In addition, provides a simple way to easily navigate and provide a better understanding of the organization of the data which includes more complex structures such as Option Chains, Indices, etc.
+When building applications consuming streaming market data, developers often need a list of RICs (Reuters Instrument Codes) for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
 
 The Speed Guide tool registers for Snapshot only data content (i.e, non-streaming).
 
@@ -45,15 +18,17 @@ The executable program and Readme is available for Download within the [Refiniti
 
 ## Running the Utility
 
-The Speed Guide application must connect to an Elektron system/TREP (Thomson Reuters Enterprise Platform).
+The Speed Guide utility provides the ability to connect directly to the Refinitiv Data Platform, via ERT in Cloud or access through your deployed Elektron system/TREP (Thomson Reuters Enterprise Platform) service.
 
 The package includes 2 components offering multiple ways to launch the tool.  Packaged are:
 
-  * **SpeedGuide.jar**: An executable JAR available for both Windows and Linux
-  * **SpeedGuide.exe**: A windows wrapper
-### Launching the tool by double clicking on the icon (Windows):
+  * **SpeedGuide.jar**: An executable JAR available for Windows, Mac or Linux
+  * **SpeedGuide.exe**: A convenient windows wrapper
+### Launching the tool from the desktop (Windows):
 
-Double-clicking either the _.jar_ or _.exe_ file will not pass any required parameters to the application.  As such, the application will present a [Connection Dialog](#usage) requesting for these connection parameters.  In either case, no console is involved thus no additional messages, such as log messages, can be viewed.
+Double-clicking either the _.jar_ or _.exe_ file will not pass any required connection parameters to the application.  However, users can create a shortcut on their desktop and apply parameters there - see [Command-line Options](#Command-line-options) below.
+
+If the required parameters are not specified, the application will present a [Connection Dialog](#usage) requesting for the required connection details.  In either case, no console is involved thus no additional messages, such as log messages, can be viewed.
 
 **Note**: Launching the executable JAR requires the [Javaw](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html) program to open it.  When not associated, you will be presented with a request such as:
 
@@ -61,13 +36,13 @@ Double-clicking either the _.jar_ or _.exe_ file will not pass any required para
 
 You will need to choose the Javaw program within your Java installation.
 
-### Launching the tool from the console:
+### Launching the tool from the console
 
 At the console, you can pass command-line parameters to the utility:
 
 * #### Launching the executable JAR
 
-  \> **java -jar SpeedGuide.jar [options]**
+  \> **java -jar SpeedGuide.jar [connection parameters]**
   
     When launching the executable JAR, users optionally specify command-line options and have the opportunity to see the output on the console.
 	
@@ -77,32 +52,51 @@ At the console, you can pass command-line parameters to the utility:
 
     The windows wrapper is strictly a GUI based facility that does not have an explicit console attached.  Thus, no output can be viewed on the console.  However, users can capture the output within a file.  for example:
 		
-  \> **SpeedGuide.exe>output.txt [options]**
+  \> **SpeedGuide.exe>output.txt [connection parameters]**
 	
   
 #### Command-line Options
 
-    --host=hostname:port    Server address/hostname and port of your Market Data server.
-                            Syntax: <host/ip>:<port>.  Eg: elektron:14002 or 192.168.1.1:14002
-    --service=serviceName   Service Name providing market data content.
+    ************* Elektron Connection Parameters **************
+    --host=hostname:port    Required. Elektron Server address/hostname and port of your Market Data
+                            server. Syntax: <host/ip>:<port>.  Eg: elektron:14002 or 192.168.1.1:14002
+    --service=serviceName   Required. Elektron Service Name providing market data content.
                             Eg: ELEKTRON_AD.
-    --user=userName         User name required if authentication is enabled on server.
+    --user=userName         Optional. DACS User name required if authentication is enabled on server.
                             Note: if no user name is provided, the utility will use your desktop login
-    --appid=ApplicationId   DACS Application ID if authentication is enabled on server.
-                            Application ID has no default.
-    --position=Position     DACS Position if authentication is enabled on server.
+    --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.                                 Application ID has no default.
+    --position=Position     Optional. DACS Position if authentication is enabled on server.
                             Position has no default.
+        
+    ************* ERT in Cloud Connection Parameters **************
+    --machineId=machine ID  Required. ERT in Cloud Machine ID/User required for OAuth authentication.
+                            Eg: GE-A-00000000-1-8888
+    --password=password     Required. ERT in Cloud password required for OAuth authentication.
+                            Eg: Sunshine_1_UserPass
+    --appKey=App Key        Required. ERT in Cloud AppKey or Client ID required for server
+                            authentication. Eg: x888x8x88888888x88888x88x8888xx88x88888x
+    --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.
+                            Default: SpeedGuide provides a file for convenience.
+    --keyStorePasswd=passwd Optional. Password associated with the specified keystore file.
+                            Default: SpeedGuide includes the password for the default keystore file.
+         
     --d[ebug]               Debug Mode.  Display verbose messages to the console
-    --h[elp]                Prints the options screen
-If neither the --host nor --service is provided, the utility will **prompt the user** to enter these values.
+    --h[elp]                Prints this screen
+The following example shows the command-line parameters to connect to either a deployed Elektron service or directly to ERT in Cloud.
 
-Example: \> **SpeedGuide --host=elektron:14002 --service=ELEKTRON_AD --user=testuser**
-
+    > SpeedGuide.exe --host=elektron:14002 --service=ELEKTRON_AD --user=testuser --appid=256 
+                     --position=127.0.0.1
+    > SpeedGuide.exe --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass 
+                     --appKey=x888x8x88888888x88888x88x8888xx88x88888x
 ## Usage
 
-When launching the utility specifying insufficient command-line options, the user will be presented with a Connection dialog:
+When launching the utility specifying insufficient command-line options, the user will be presented with a Connection dialog.  The user can choose how they want to access the platform, i.e. through their deployed Elektron services:
 
 ![connect](images/connect.png)
+
+Or directory to ERT in Cloud over the Internet:
+
+![connect](images/connectERT.png)
 
 The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be made to your specified server, the utility will launch the root Speed Guide item, i.e. **THOMSONREUTERS**.
 
@@ -153,12 +147,41 @@ We can see from above, the record contains a preset number of elements (1-14) an
 
 The utility was developed using the [Elektron SDK Java API](https://developers.refinitiv.com/elektron/elektron-sdk-java) and Java's GUI library Java 8 - JavaFx.
 
+## Prerequisites
 
-## Built With
+Required software components:
 
-* [Elektron Message API](https://developers.refinitiv.com/elektron/elektron-sdk-java)
-* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Elektron Message API](https://developers.refinitiv.com/elektron/elektron-sdk-java) (1.2 or greater) - Refinitiv interface to the Elektron Market Data environment.
+* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8. 
+
+Optional software components:
+
 * [Eclipse](https://www.eclipse.org/efxclipse/install.html) - IDE for Java development (tested)
+* Other IDE's such as: [NetBeans](https://netbeans.org/), [Intellij IDEA](https://www.jetbrains.com/idea/)
+* [JavaFX Scene Builder](http://gluonhq.com/labs/scene-builder/) - UI to author JavaFX GUI-based applications
+* [Ant](https://ant.apache.org/) - A command-line tool to compile and run the SpeedGuide utility 
+
+
+## Building and running
+
+This package includes an Ant build.xml file to build and execute the SpeedGuide utility.  The build.xml Ant file requires the following environment variables:
+
+```
+   JAVA_HOME          - Root directory of your JDK 8 environment
+   ELEKTRON_JAVA_HOME - Root directory of your (EMA) Elektron Java API installation
+```
+
+Once setup, you can build and run the utility as follows:
+
+```
+To build:
+> ant
+
+To run:
+> ant run
+```
+
+
 
 ## Contributing
 
@@ -169,6 +192,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 * **Susana Chang** - Release 1.1.  *Initial work*
 * **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder to generate FXML*
 * **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
+* **Nick Zincone** - Release 3.0.  Added access to ERT in Cloud streaming services.
 
 ## License
 

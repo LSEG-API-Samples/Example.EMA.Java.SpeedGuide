@@ -32,9 +32,16 @@ import com.thomsonreuters.ema.access.OmmException;
 import com.thomsonreuters.ema.access.RefreshMsg;
 import com.thomsonreuters.ema.access.ReqMsg;
 import com.thomsonreuters.ema.access.RmtesBuffer;
+import com.thomsonreuters.ema.access.ServiceEndpointDiscovery;
+import com.thomsonreuters.ema.access.ServiceEndpointDiscoveryClient;
+import com.thomsonreuters.ema.access.ServiceEndpointDiscoveryEvent;
+import com.thomsonreuters.ema.access.ServiceEndpointDiscoveryOption;
+import com.thomsonreuters.ema.access.ServiceEndpointDiscoveryResp;
 import com.thomsonreuters.ema.access.StatusMsg;
 import com.thomsonreuters.ema.access.UpdateMsg;
 import com.thomsonreuters.ema.example.gui.SpeedGuide.SpeedGuide.StatusIndicator;
+import com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection.ERTConnection;
+import com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection.ElektronConnection;
 import com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideViewController;
 import com.thomsonreuters.ema.access.DataType.DataTypes;
 import com.thomsonreuters.ema.rdm.EmaRdm;
@@ -500,12 +507,27 @@ public class SpeedGuideConsumer implements Runnable
 	public ConsumerClient _consumerClient = new ConsumerClient();
 	protected OmmConsumer _consumer = null;
 	private boolean _launchConsumer = false;
+	
+	// Elektron connection parameters
 	private String _host;
-	private String _service;
+	private String _service = "ELEKTRON_DD";
 	private String _user;
 	private String _appId;
 	private String _position;
+	
+	// ERT in Cloud connection parameters
+	private String _machineId;
+	private String _password;
+	private String _appKey;
+	
+	private String _streamingEndpoint;
+	private String _streamingPort;
+	
+	private String _keystoreFile;
+	private String _keystorePasswd;
+	
 	private boolean _debug = false;
+	private boolean m_elektronConsumer;
 	private StatusLogHandler m_statusLogHandler;
 
 	private SpeedGuideViewController m_viewController;
@@ -546,17 +568,37 @@ public class SpeedGuideConsumer implements Runnable
 		}
 	}
 
-	public void defineConsumer(String host, String service, String user, String appId, String position)
+	public void defineElektronConsumer(ElektronConnection connectionParams)
 	{
-		_host = host.trim();
-		_service = service.trim();
-		_user = user.trim();
-		_appId = appId.trim();
-		_position = position.trim();
+		_host = connectionParams._host;
+		_service = connectionParams._service;
+		_user = connectionParams._user;
+		_appId = connectionParams._appId;
+		_position = connectionParams._position;
 
 		String userName = (_user.isEmpty() ? "<Desktop Login>" : "user");
         if (_debug) System.out.println("Connecting to Elektron @ host:[" + _host + "] service: [" + _service + "] User: [" + 
         								userName +"] applicationID: [" + _appId + "] position: [" + _position + "]");
+        m_elektronConsumer = true;
+        _launchConsumer = true;
+	}
+	
+	public void defineERTConsumer(ERTConnection connectionParams)
+	{
+		_machineId = connectionParams._machineId;
+		_password = connectionParams._password;
+		_appKey = connectionParams._appKey;
+		_keystoreFile = connectionParams._keystoreFile;
+		_keystorePasswd = connectionParams._keystorePasswd;
+		
+        if (_debug) 
+        {
+        	System.out.println("Connecting to ERT in Cloud @ machineID:[" + _machineId + "] password: [" + _password + 
+        							   "] AppKey: [" + _appKey + "]");
+        	System.out.println("Using keystore file: " + _keystoreFile);
+        }
+        
+        m_elektronConsumer = false;
         _launchConsumer = true;
 	}
 
@@ -569,13 +611,21 @@ public class SpeedGuideConsumer implements Runnable
 	{
 		return(_service);
 	}
-
+	
 	private void connectConsumer()
+	{
+		if ( m_elektronConsumer )
+			connectElektron();
+		else
+			connectERT();
+	}
+
+	private void connectElektron()
 	{
 		_launchConsumer = false;
 
-		String connectStr = "Attempting to connect to [" + _host + "]";
-		m_viewController.setConnection(false, true, "Connection in progress...");
+		String connectStr = "Attempting to connect Elektron: [" + _host + "]";
+		m_viewController.setConnection(false, true, "Connection to Elektron in progress...");
 		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
 		OmmConsumerConfig config = EmaFactory.createOmmConsumerConfig().host(_host);
 
@@ -584,86 +634,193 @@ public class SpeedGuideConsumer implements Runnable
 		if ( !_appId.isEmpty() ) config.applicationId(_appId);
 		if ( !_position.isEmpty() ) config.position(_position);
 
-		_consumer  = EmaFactory.createOmmConsumer(config,
-										new OmmConsumerErrorClient() {
-											public void onInvalidHandle(long handle, String text) {
-												m_viewController.updateStatus("OnInvalidHandle: " + text, StatusIndicator.RESPONSE_ERROR);
-											}
+		// Register Consumer
+		registerConsumer(config);
+	}
+	
+	private void connectERT()
+	{
+		_launchConsumer = false;
 
-											public void onInvalidUsage(String text) {
-												m_viewController.setConnection(false, false, "Connection Failed.");
-											}
-										});
-
-		ReqMsg reqMsg = EmaFactory.createReqMsg();
-
-		// Register interest in the Directory information to capture the list of Services for this connection
-		_consumer.registerClient(reqMsg.domainType(EmaRdm.MMT_DIRECTORY),
-				new OmmConsumerClient() {
-					public void onGenericMsg(GenericMsg genericMsg, OmmConsumerEvent consumerEvent){}
-				    public void onAckMsg(AckMsg ackMsg, OmmConsumerEvent consumerEvent){}
-				    public void onAllMsg(Msg msg, OmmConsumerEvent consumerEvent){}
-				    public void onRefreshMsg(RefreshMsg refreshMsg, OmmConsumerEvent consumerEvent) {
-				    	decode(refreshMsg.payload().map());
-				    }
-				    public void onUpdateMsg(UpdateMsg updateMsg, OmmConsumerEvent consumerEvent){}
-				    public void onStatusMsg(StatusMsg statusMsg, OmmConsumerEvent consumerEvent){}
-
-				    void decode(ElementList elementList)
+		String connectStr = "Attempting to connect ERT in Cloud";
+		m_viewController.setConnection(false, true, "Connection to ERT in Cloud in progress...");
+		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
+		
+		// Configuration
+		OmmConsumerConfig config = EmaFactory.createOmmConsumerConfig().username(_machineId).password(_password).clientId(_appKey);
+		Map configDb = EmaFactory.createMap();
+		
+		// Service discovery - we query ERT for the available services
+		ServiceEndpointDiscovery serviceDiscovery = EmaFactory.createServiceEndpointDiscovery();
+		
+		// Capture service discovery events
+		serviceDiscovery.registerClient(EmaFactory.createServiceEndpointDiscoveryOption().username(_machineId)
+				.password(_password).clientId(_appKey).transport(ServiceEndpointDiscoveryOption.TransportProtocol.TCP),
+				//.proxyHostName(proxyHostName).proxyPort(proxyPort).proxyUserName(proxyUserName)
+				//.proxyPassword(proxyPassword).proxyDomain(proxyDomain).proxyKRB5ConfigFile(proxyKrb5Configfile)
+				new ServiceEndpointDiscoveryClient() {
+					public void onSuccess(ServiceEndpointDiscoveryResp serviceEndpointResp, ServiceEndpointDiscoveryEvent event)
 					{
-						for (ElementEntry elementEntry : elementList)
+						//System.out.println(serviceEndpointResp); // dump service discovery endpoints
+						
+						for(int index = 0; index < serviceEndpointResp.serviceEndpointInfoList().size(); index++)
 						{
-							if ( elementEntry.name().equals("Name") )
+							List<String> locationList = serviceEndpointResp.serviceEndpointInfoList().get(index).locationList();
+							
+							if(locationList.size() == 2) // Get an endpoint that provides auto failover for the specified location.
 							{
-								m_viewController.addService(elementEntry.ascii().toString());
-								break;
+								if(locationList.get(0).startsWith("us-east"))	// Should be configurable
+								{
+									_streamingEndpoint = serviceEndpointResp.serviceEndpointInfoList().get(index).endpoint();
+									_streamingPort = serviceEndpointResp.serviceEndpointInfoList().get(index).port();
+									m_viewController.updateStatus("Using streaming Endpoint: " + _streamingEndpoint, StatusIndicator.RESPONSE_SUCCESS);
+									break;
+								}
+								else
+									m_viewController.updateStatus("Discovered streaming Endpoint: " + 
+																  serviceEndpointResp.serviceEndpointInfoList().get(index).endpoint(), 
+																  StatusIndicator.RESPONSE_SUCCESS);
 							}
 						}
 					}
-
-					void decode(Map map)
+					public void onError(String errorText, ServiceEndpointDiscoveryEvent event)
 					{
-						for(MapEntry mapEntry : map)
-						{
-							switch (mapEntry.loadType())
-							{
-								case DataTypes.FILTER_LIST :
-									decode(mapEntry.filterList());
-									break;
-							}
-						}
-					}
-
-					void decode(FilterList filterList)
-					{
-						for(FilterEntry filterEntry : filterList)
-						{
-							switch (filterEntry.loadType())
-							{
-								case DataTypes.ELEMENT_LIST :
-									decode(filterEntry.elementList());
-									break;
-								case DataTypes.MAP :
-									decode(filterEntry.map());
-									break;
-							}
-						}
+						m_viewController.updateStatus("Failed to query service discovery. [" + errorText + "]", StatusIndicator.RESPONSE_ERROR);
+						m_viewController.setConnection(false, false, "Connection Failed.");
 					}
 				});
-		_consumer.registerClient(reqMsg.domainType(EmaRdm.MMT_LOGIN),
-					new OmmConsumerClient() {
-						public void onGenericMsg(GenericMsg genericMsg, OmmConsumerEvent consumerEvent){}
-					    public void onAckMsg(AckMsg ackMsg, OmmConsumerEvent consumerEvent){}
-					    public void onAllMsg(Msg msg, OmmConsumerEvent consumerEvent){}
-					    public void onRefreshMsg(RefreshMsg refreshMsg, OmmConsumerEvent consumerEvent)
-					    {
-					    	m_viewController.updateStatus(refreshMsg.state().statusText(), StatusIndicator.RESPONSE_SUCCESS);
-					    	m_viewController.setConnection(true, false, "");
-					    	subscribe("THOMSONREUTERS");
-					    }
-					    public void onUpdateMsg(UpdateMsg updateMsg, OmmConsumerEvent consumerEvent){}
-					    public void onStatusMsg(StatusMsg statusMsg, OmmConsumerEvent consumerEvent){}
-				});
+		
+		// Create an in-memory configuration
+		createProgramaticConfig(configDb);
+		config.config(configDb);
+		config.consumerName("Consumer_1");
+		
+		// Define keystore files used for encryption
+		config.tunnelingKeyStoreFile(_keystoreFile);
+		config.tunnelingKeyStorePasswd(_keystorePasswd);
+		
+		// Register Consumer
+		registerConsumer(config);
+	}
+	
+	// registerConsumer
+	// Creates our OMM Consumer to capture directory and market data requests
+	private void registerConsumer(OmmConsumerConfig config)
+	{
+		// Create our consumer of market data	
+				_consumer = EmaFactory.createOmmConsumer(config,
+						new OmmConsumerErrorClient() {
+							public void onInvalidHandle(long handle, String text) {
+								m_viewController.updateStatus("OnInvalidHandle: " + text, StatusIndicator.RESPONSE_ERROR);
+							}
+
+							public void onInvalidUsage(String text) {
+								m_viewController.setConnection(false, false, "Connection Failed.");
+							}
+						});
+
+				ReqMsg reqMsg = EmaFactory.createReqMsg();
+				
+				// Register interest in the Directory information to capture the list of Services for this connection
+				_consumer.registerClient(reqMsg.domainType(EmaRdm.MMT_DIRECTORY),
+						new OmmConsumerClient() {
+							public void onGenericMsg(GenericMsg genericMsg, OmmConsumerEvent consumerEvent){}
+						    public void onAckMsg(AckMsg ackMsg, OmmConsumerEvent consumerEvent){}
+						    public void onAllMsg(Msg msg, OmmConsumerEvent consumerEvent){}
+						    public void onRefreshMsg(RefreshMsg refreshMsg, OmmConsumerEvent consumerEvent) {
+						    	decode(refreshMsg.payload().map());
+						    }
+						    public void onUpdateMsg(UpdateMsg updateMsg, OmmConsumerEvent consumerEvent){}
+						    public void onStatusMsg(StatusMsg statusMsg, OmmConsumerEvent consumerEvent){}
+
+						    void decode(ElementList elementList)
+							{
+								for (ElementEntry elementEntry : elementList)
+								{
+									if ( elementEntry.name().equals("Name") )
+									{
+										String service = elementEntry.ascii().toString();
+										m_viewController.addService(service);
+										m_viewController.updateStatus("Discovered Service: " + service, StatusIndicator.RESPONSE_SUCCESS);
+										break;
+									}
+								}
+							}
+
+							void decode(Map map)
+							{
+								for(MapEntry mapEntry : map)
+								{
+									switch (mapEntry.loadType())
+									{
+										case DataTypes.FILTER_LIST :
+											decode(mapEntry.filterList());
+											break;
+									}
+								}
+							}
+
+							void decode(FilterList filterList)
+							{
+								for(FilterEntry filterEntry : filterList)
+								{
+									switch (filterEntry.loadType())
+									{
+										case DataTypes.ELEMENT_LIST :
+											decode(filterEntry.elementList());
+											break;
+										case DataTypes.MAP :
+											decode(filterEntry.map());
+											break;
+									}
+								}
+							}
+						});
+				_consumer.registerClient(reqMsg.domainType(EmaRdm.MMT_LOGIN),
+							new OmmConsumerClient() {
+								public void onGenericMsg(GenericMsg genericMsg, OmmConsumerEvent consumerEvent){}
+							    public void onAckMsg(AckMsg ackMsg, OmmConsumerEvent consumerEvent){}
+							    public void onAllMsg(Msg msg, OmmConsumerEvent consumerEvent){}
+							    public void onRefreshMsg(RefreshMsg refreshMsg, OmmConsumerEvent consumerEvent)
+							    {
+							    	m_viewController.updateStatus(refreshMsg.state().statusText(), StatusIndicator.RESPONSE_SUCCESS);
+							    	m_viewController.setConnection(true, false, "");
+							    	subscribe("THOMSONREUTERS");
+							    }
+							    public void onUpdateMsg(UpdateMsg updateMsg, OmmConsumerEvent consumerEvent){}
+							    public void onStatusMsg(StatusMsg statusMsg, OmmConsumerEvent consumerEvent){}
+						});
+	}
+	
+	private void createProgramaticConfig(Map configDb)
+	{
+		Map elementMap = EmaFactory.createMap();
+		ElementList elementList = EmaFactory.createElementList();
+		ElementList innerElementList = EmaFactory.createElementList();
+		
+		innerElementList.add(EmaFactory.createElementEntry().ascii("Channel", "Channel_1"));
+		
+		elementMap.add(EmaFactory.createMapEntry().keyAscii("Consumer_1", MapEntry.MapAction.ADD, innerElementList));
+		innerElementList.clear();
+		
+		elementList.add(EmaFactory.createElementEntry().map("ConsumerList", elementMap));
+		elementMap.clear();
+		
+		configDb.add(EmaFactory.createMapEntry().keyAscii("ConsumerGroup", MapEntry.MapAction.ADD, elementList));
+		elementList.clear();
+		
+		innerElementList.add(EmaFactory.createElementEntry().ascii("ChannelType", "ChannelType::RSSL_ENCRYPTED"));
+		innerElementList.add(EmaFactory.createElementEntry().ascii("Host", _streamingEndpoint));
+		innerElementList.add(EmaFactory.createElementEntry().ascii("Port", _streamingPort));
+		innerElementList.add(EmaFactory.createElementEntry().intValue("EnableSessionManagement", 1));
+		
+		elementMap.add(EmaFactory.createMapEntry().keyAscii("Channel_1", MapEntry.MapAction.ADD, innerElementList));
+		innerElementList.clear();
+		
+		elementList.add(EmaFactory.createElementEntry().map("ChannelList", elementMap));
+		elementMap.clear();
+		
+		configDb.add(EmaFactory.createMapEntry().keyAscii("ChannelGroup", MapEntry.MapAction.ADD, elementList));
 	}
 
 	/**

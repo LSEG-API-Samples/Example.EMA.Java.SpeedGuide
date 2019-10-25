@@ -19,12 +19,6 @@ import javafx.stage.Stage;
 // this class.
 public class SpeedGuide extends Application
 {
-	final String HOST_PARAM = "host";
-	final String SERVICE_PARAM = "service";
-	final String USER_PARAM = "user";
-	final String APPID_PARAM = "appid";
-	final String POSITION_PARAM = "position";
-
 	public enum StatusIndicator
 	{
 		REQUEST,
@@ -33,7 +27,7 @@ public class SpeedGuide extends Application
 	}
 
 	public static final String NEWLINE = System.getProperty("line.separator");
-	public static final String VER_CODE = "2.1";
+	public static final String VER_CODE = "3.0";
     public SpeedGuideConsumer m_consumer = new SpeedGuideConsumer();
     private boolean m_debug = false;
 
@@ -74,19 +68,14 @@ public class SpeedGuide extends Application
 			// Set up our EMA Consumer and launch a thread to run...
 	        Thread t = new Thread(m_consumer);
 	        t.start();
-
-	    	Application.Parameters params = getParameters();
 	    	
-	    	connectionController.initialize(params.getNamed().get(HOST_PARAM),
-	    						  			params.getNamed().get(SERVICE_PARAM),
-	    						  			params.getNamed().get(USER_PARAM),
-	    						  			params.getNamed().get(APPID_PARAM),
-	    						  			params.getNamed().get(POSITION_PARAM),
-	    						  			m_consumer);
-
-	        // Attempt to Connect into Elektron
+	    	// Initialize Connection Parameters
+	    	connectionController.initialize(getParameters(), m_consumer);
+	    	
 			if ( splash != null )
 				splash.close();
+			
+	        // Attempt to Connect into the configured server (Elektron or ERT in Cloud)
 	        connectionController.connect();
 		} catch  (Exception e) {
 			System.out.print("Exception in Application Start: ");
@@ -122,21 +111,37 @@ public class SpeedGuide extends Application
     		System.out.println("  > java -jar SpeedGuide.jar [options]  or"+NEWLINE);
     		System.out.println("  > SpeedGuide.exe [options] <Windows only>"+NEWLINE);
     		System.out.println("Options:"+NEWLINE);
-    		System.out.println("  --host=hostname:port    Server address/hostname and port of your Market Data server.");
+    		System.out.println("************* Elektron Connection Parameters **************");
+    		System.out.println("  --host=hostname:port    Required. Elektron Server address/hostname and port of your Market Data server.");
     		System.out.println("                          Syntax: <host/ip>:<port>.  Eg: elektron:14002 or 192.168.1.1:14002");
-			System.out.println("  --service=serviceName   Service Name providing market data content.");
+			System.out.println("  --service=serviceName   Required. Elektron Service Name providing market data content.");
 			System.out.println("                          Eg: ELEKTRON_AD.");
-			System.out.println("  --user=userName         User name required if authentication is enabled on server.");
+			System.out.println("  --user=userName         Optional. DACS User name required if authentication is enabled on server.");
 			System.out.println("                          Note: if no user name is provided, the utility will use your desktop login");
-			System.out.println("  --appid=ApplicationId   DACS Application ID if authentication is enabled on server.");
+			System.out.println("  --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.");
 			System.out.println("                          Application ID has no default.");
-			System.out.println("  --position=Position     DACS Position if authentication is enabled on server.");
-			System.out.println("                          Position has no default.");			
+			System.out.println("  --position=Position     Optional. DACS Position if authentication is enabled on server.");
+			System.out.println("                          Position has no default.");
+			System.out.println(NEWLINE);
+    		System.out.println("************* ERT in Cloud Connection Parameters **************");			
+    		System.out.println("  --machineId=machine ID  Required. ERT in Cloud Machine ID/User required for OAuth authentication.");
+    		System.out.println("                          Eg: GE-A-00000000-1-8888");
+			System.out.println("  --password=password     Required. ERT in Cloud password required for OAuth authentication.");
+			System.out.println("                          Eg: Sunshine_1_UserPass");
+			System.out.println("  --appKey=App Key     	  Required. ERT in Cloud AppKey or Client ID required for server authentication.");
+			System.out.println("                          Eg: x888x8x88888888x88888x88x8888xx88x88888x");
+			System.out.println("  --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.");
+			System.out.println("                          Default: SpeedGuide provides a file for convenience.");
+			System.out.println("  --keyStorePasswd=passwd Optional. Password associated with the specified keystore file.");
+			System.out.println("                          Default: SpeedGuide includes the password for the default keystore file.");
+			System.out.println(NEWLINE);
 			System.out.println("  --d[ebug]               Debug Mode.  Display verbose messages to the console");
 			System.out.println("  --h[elp]                Prints this screen"+NEWLINE);
-			System.out.println("If neither the --host nor --service is not provided, the utility will prompt the user to enter these values."+NEWLINE);
+			System.out.println("If neither the required parameters for the Elektron or ERT in Cloud parameters are specified, the utility will prompt the user.");
+			System.out.println(NEWLINE);
 			System.out.println("Example:");
 			System.out.println("  > SpeedGuide.exe --host=elektron:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1");
+			System.out.println("  > SpeedGuide.exe --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass --appKey=x888x8x88888888x88888x88x8888xx88x88888x");
     		stop();
     	}
 

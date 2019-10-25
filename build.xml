@@ -31,14 +31,18 @@
     
 	<path id="app.classpath">
         <pathelement path="${bin.dir}"/>
-        <pathelement path="${env.ELEKTRON_JAVA_HOME}/Java/Ema/Libs/ema-3.3.0.0.jar"/>      
+        <pathelement path="${env.ELEKTRON_JAVA_HOME}/Java/Ema/Libs/ema-3.3.1.0.jar"/>      
         <pathelement path="${emaj.libs}/apache/commons-lang-2.6.jar"/>
         <pathelement path="${emaj.libs}/apache/commons-configuration-1.10.jar"/>
         <pathelement path="${emaj.libs}/apache/commons-logging-1.2.jar"/>
     	<pathelement path="${emaj.libs}/apache/commons-collections-3.2.2.jar"/>
         <pathelement path="${emaj.libs}/SLF4J/slf4j-1.7.12/slf4j-api-1.7.12.jar"/>    
-        <pathelement path="${etaj.libs}/upa-3.3.0.0.jar"/>
-        <pathelement path="${etaj.libs}/upaValueAdd-3.3.0.0.jar"/>
+        <pathelement path="${etaj.libs}/upa-3.3.1.0.jar"/>
+        <pathelement path="${etaj.libs}/upaValueAdd-3.3.1.0.jar"/>
+        <pathelement path="${etaj.libs}/ApacheClient/httpcore-nio-4.4.10.jar"/>
+        <pathelement path="${etaj.libs}/ApacheClient/httpcore-4.4.6.jar"/>
+        <pathelement path="${etaj.libs}/ApacheClient/httpclient-4.5.3.jar"/>
+        <pathelement path="${etaj.libs}/json-20180130.jar"/>        
         <pathelement path="${java.libs}/ant-javafx.jar"/>
     </path> 
   
@@ -54,5 +58,12 @@
         <copy todir="${bin.dir}/${app.resource}">
             <fileset dir="${src.dir}/${app.resource}" includes="**/*.fxml,**/*.css,images/*"/>
         </copy>
+    </target>
+    
+    <target name="run" depends="compile">
+       <java dir="${bin.dir}" classname="com.thomsonreuters.ema.example.gui.SpeedGuide.SpeedGuide" fork="true">
+            <arg line="${args}"/>
+            <classpath refid="app.classpath"/>
+       </java>
     </target>
 </project>
