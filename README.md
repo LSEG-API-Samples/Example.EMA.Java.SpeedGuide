@@ -12,7 +12,7 @@ The Speed Guide tool registers for Snapshot only data content (i.e, non-streamin
 
 ## Utility download
 
-The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/system/files/SpeedGuide_2.0.zip).
+The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/system/files/SpeedGuide_3.0.zip).
 
 ## Running the Utility
 
