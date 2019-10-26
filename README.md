@@ -12,7 +12,7 @@ The Speed Guide tool registers for Snapshot only data content (i.e, non-streamin
 
 ## Utility download
 
-The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/system/files/SpeedGuide_3.0.zip).
+The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/system/files/SpeedGuide_3.0_0.zip).
 
 ## Running the Utility
 
@@ -97,9 +97,9 @@ Or directory to ERT in Cloud over the Internet:
 
 ![connect](images/connectERT.png)
 
-The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be made to your specified server, the utility will launch the root Speed Guide item, i.e. **THOMSONREUTERS**.
+The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be made to your specified server, the utility will launch the root Speed Guide item, i.e. **REFINITIV**.
 
-**Note**: While the utility will launch the "THOMSONREUTERS" RIC, which represents the root code of the Speed Guide pages, the utility is extremely useful for developers to visualize any other instrument available within Elektron.
+**Note**: While the utility will launch the "REFINITIV" RIC, which represents the root code of the Speed Guide pages, the utility is extremely useful for developers to visualize any other instrument available within Elektron.
 
 ![main](images/main.png)
 

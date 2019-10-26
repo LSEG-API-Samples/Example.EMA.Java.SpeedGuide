@@ -785,7 +785,7 @@ public class SpeedGuideConsumer implements Runnable
 							    {
 							    	m_viewController.updateStatus(refreshMsg.state().statusText(), StatusIndicator.RESPONSE_SUCCESS);
 							    	m_viewController.setConnection(true, false, "");
-							    	subscribe("THOMSONREUTERS");
+							    	subscribe("REFINITIV");
 							    }
 							    public void onUpdateMsg(UpdateMsg updateMsg, OmmConsumerEvent consumerEvent){}
 							    public void onStatusMsg(StatusMsg statusMsg, OmmConsumerEvent consumerEvent){}
