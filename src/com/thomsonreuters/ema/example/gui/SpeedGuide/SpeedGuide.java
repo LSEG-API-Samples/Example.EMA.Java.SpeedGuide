@@ -27,7 +27,7 @@ public class SpeedGuide extends Application
 	}
 
 	public static final String NEWLINE = System.getProperty("line.separator");
-	public static final String VER_CODE = "3.0";
+	public static final String VER_CODE = "3.0.1";
     public SpeedGuideConsumer m_consumer = new SpeedGuideConsumer();
     private boolean m_debug = false;
 

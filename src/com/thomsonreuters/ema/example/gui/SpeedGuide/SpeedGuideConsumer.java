@@ -690,17 +690,19 @@ public class SpeedGuideConsumer implements Runnable
 					}
 				});
 		
-		// Create an in-memory configuration
-		createProgramaticConfig(configDb);
-		config.config(configDb);
-		config.consumerName("Consumer_1");
-		
-		// Define keystore files used for encryption
-		config.tunnelingKeyStoreFile(_keystoreFile);
-		config.tunnelingKeyStorePasswd(_keystorePasswd);
-		
-		// Register Consumer
-		registerConsumer(config);
+		// Create an in-memory configuration (only if we were able to connect and retrieve and endpoint)
+		if ( _streamingEndpoint != null) {
+			createProgramaticConfig(configDb);
+			config.config(configDb);
+			config.consumerName("Consumer_1");
+			
+			// Define keystore files used for encryption
+			config.tunnelingKeyStoreFile(_keystoreFile);
+			config.tunnelingKeyStorePasswd(_keystorePasswd);
+			
+			// Register Consumer
+			registerConsumer(config);
+		}
 	}
 	
 	// registerConsumer
