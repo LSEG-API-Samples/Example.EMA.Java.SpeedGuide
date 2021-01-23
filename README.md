@@ -1,22 +1,22 @@
 # Speed Guide
-The Speed Guide utility allows users and developers, who do not have access to **Refinitiv Eikon**, a simple and quick way to easily browse the streaming services available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
+The Speed Guide utility allows users and developers, who do not have access to **Refinitiv Eikon/Refinitiv Workspace** desktop applications, a simple and quick way to easily browse market data content available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
 
 
 # Overview
 
-The Speed Guide utility allows users and developers who do not have access to the Eikon Desktop application to browse streaming content available from Refinitiv's Data Platform.  Streaming content can be accessed within ERT in Cloud or directly to your deployed Elektron services.
+The Speed Guide utility allows users and developers who do not have access to the desktop application to browse market data content available from Refinitiv's Data Platform.  The utility provides access to either  cloud-based, Real-Time -- Optimized services or directly to your deployed Real-Time servers.
 
-When building applications consuming streaming market data, developers often need a list of RICs (Reuters Instrument Codes) for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
+When building applications consuming streaming market data, developers often need a list of RICs (Reuters Instrument Codes), and the values they contain, for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
 
 The Speed Guide tool registers for Snapshot only data content (i.e, non-streaming).
 
 ## Utility download
 
-The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/system/files/SpeedGuide_3.0.1.zip).
+The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/download#refinitiv-real-time-sdk-tools).
 
 ## Running the Utility
 
-The Speed Guide utility provides the ability to connect directly to the Refinitiv Data Platform, via ERT in Cloud or access through your deployed Elektron system/TREP (Thomson Reuters Enterprise Platform) service.
+The Speed Guide utility provides the ability to connect directly to the Refinitiv Data Platform, via Refinitiv Real-Time -- Optimized or access through your deployed Real-Time streaming server (ADS) available within the Refinitiv RTDS (Real-Time Distribution System).
 
 The package includes 2 components offering multiple ways to launch the tool.  Packaged are:
 
@@ -42,23 +42,23 @@ At the console, you can pass command-line parameters to the utility:
 
   \> **java -jar SpeedGuide.jar [connection parameters]**
   
-    When launching the executable JAR, users optionally specify command-line options and have the opportunity to see the output on the console.
+  When launching the executable JAR, users optionally specify command-line options and have the opportunity to see the output on the console.
 	
 * #### Launching the windows wrapper EXE
   
   \> **SpeedGuide.exe [options]**
 
-    The windows wrapper is strictly a GUI based facility that does not have an explicit console attached.  Thus, no output can be viewed on the console.  However, users can capture the output within a file.  for example:
+  The windows wrapper is strictly a GUI based facility that does not have an explicit console attached.  Thus, no output can be viewed on the console.  However, users can capture the output within a file.  for example:
 		
   \> **SpeedGuide.exe>output.txt [connection parameters]**
 	
   
 #### Command-line Options
 
-    ************* Elektron Connection Parameters **************
-    --host=hostname:port    Required. Elektron Server address/hostname and port of your Market Data
+    ************* ADS Connection Parameters **************
+    --host=hostname:port    Required. ADS Server address/hostname and port of your Market Data
                             server. Syntax: <host/ip>:<port>.  Eg: elektron:14002 or 192.168.1.1:14002
-    --service=serviceName   Required. Elektron Service Name providing market data content.
+    --service=serviceName   Required. AD Service Name providing market data content.
                             Eg: ELEKTRON_AD.
     --user=userName         Optional. DACS User name required if authentication is enabled on server.
                             Note: if no user name is provided, the utility will use your desktop login
@@ -67,12 +67,12 @@ At the console, you can pass command-line parameters to the utility:
     --position=Position     Optional. DACS Position if authentication is enabled on server.
                             Position has no default.
         
-    ************* ERT in Cloud Connection Parameters **************
-    --machineId=machine ID  Required. ERT in Cloud Machine ID/User required for OAuth authentication.
+    ************* Real-Time -- Optimized Connection Parameters **************
+    --machineId=machine ID  Required. Real-Time -- Optimized Machine ID/User required for OAuth authentication.
                             Eg: GE-A-00000000-1-8888
-    --password=password     Required. ERT in Cloud password required for OAuth authentication.
+    --password=password     Required. Real-Time -- Optimized password required for OAuth authentication.
                             Eg: Sunshine_1_UserPass
-    --appKey=App Key        Required. ERT in Cloud AppKey or Client ID required for server
+    --appKey=App Key        Required. Real-Time -- Optimized AppKey or Client ID required for server
                             authentication. Eg: x888x8x88888888x88888x88x8888xx88x88888x
     --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.
                             Default: SpeedGuide provides a file for convenience.
@@ -81,25 +81,25 @@ At the console, you can pass command-line parameters to the utility:
          
     --d[ebug]               Debug Mode.  Display verbose messages to the console
     --h[elp]                Prints this screen
-The following example shows the command-line parameters to connect to either a deployed Elektron service or directly to ERT in Cloud.
+The following example shows the command-line parameters to connect to either an ADS or directly to Real-Time -- Optimized in the cloud.
 
-    > SpeedGuide.exe --host=elektron:14002 --service=ELEKTRON_AD --user=testuser --appid=256 
+    > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 
                      --position=127.0.0.1
     > SpeedGuide.exe --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass 
                      --appKey=x888x8x88888888x88888x88x8888xx88x88888x
 ## Usage
 
-When launching the utility specifying insufficient command-line options, the user will be presented with a Connection dialog.  The user can choose how they want to access the platform, i.e. through their deployed Elektron services:
+When launching the utility specifying insufficient command-line options, the user will be presented with a Connection dialog.  The user can choose how they want to access the platform, i.e. through their deployed real-time services, via ADS:
 
 ![connect](images/connect.png)
 
-Or directory to ERT in Cloud over the Internet:
+Or directly to the cloud via Real-Time -- Optimized:
 
 ![connect](images/connectERT.png)
 
 The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be made to your specified server, the utility will launch the root Speed Guide item, i.e. **REFINITIV**.
 
-**Note**: While the utility will launch the "REFINITIV" RIC, which represents the root code of the Speed Guide pages, the utility is extremely useful for developers to visualize any other instrument available within Elektron.
+**Note**: While the utility will launch the "REFINITIV" RIC, which represents the root code of the Speed Guide pages, the utility is extremely useful for developers to visualize any other instrument available within the data platform.
 
 ![main](images/main.png)
 
@@ -146,13 +146,13 @@ Feel free to navigate through the guide to discover many other assets and data e
 
 # Solution Code
 
-The utility was developed using the [Elektron SDK Java API](https://developers.refinitiv.com/elektron/elektron-sdk-java) and Java's GUI library Java 8 - JavaFx.
+The utility was developed using the [Refinitiv Real-Time SDK - Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java) and Java's GUI library Java 8 - JavaFx.
 
 ## Prerequisites
 
 Required software components:
 
-* [Elektron Message API](https://developers.refinitiv.com/elektron/elektron-sdk-java) (1.2 or greater) - Refinitiv interface to the Elektron Market Data environment.
+* [Refinitiv Real-Time SDK - Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java) (1.2 or greater) - Refinitiv interface to streaming, real-time services.
 * [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8. 
 
 Optional software components:
@@ -169,7 +169,7 @@ This package includes an Ant build.xml file to build and execute the SpeedGuide 
 
 ```
    JAVA_HOME          - Root directory of your JDK 8 environment
-   ELEKTRON_JAVA_HOME - Root directory of your (EMA) Elektron Java API installation
+   ELEKTRON_JAVA_HOME - Root directory of your (EMA) Real-Time Java API installation
 ```
 
 Once setup, you can build and run the utility as follows:
@@ -193,7 +193,8 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 * **Susana Chang** - Release 1.1.  *Initial work*
 * **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder to generate FXML*
 * **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
-* **Nick Zincone** - Release 3.0.  Added access to ERT in Cloud streaming services.
+* **Nick Zincone** - Release 3.0.  Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services.
+* **Nick Zincone** - Release 3.1.  Fixed connectivity issues and re branded.
 
 ## License
 
