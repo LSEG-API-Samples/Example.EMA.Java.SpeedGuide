@@ -577,7 +577,7 @@ public class SpeedGuideConsumer implements Runnable
 		_position = connectionParams._position;
 
 		String userName = (_user.isEmpty() ? "<Desktop Login>" : "user");
-        if (_debug) System.out.println("Connecting to Elektron @ host:[" + _host + "] service: [" + _service + "] User: [" + 
+        if (_debug) System.out.println("Connecting to ADS @ host:[" + _host + "] service: [" + _service + "] User: [" + 
         								userName +"] applicationID: [" + _appId + "] position: [" + _position + "]");
         m_elektronConsumer = true;
         _launchConsumer = true;
@@ -593,7 +593,7 @@ public class SpeedGuideConsumer implements Runnable
 		
         if (_debug) 
         {
-        	System.out.println("Connecting to ERT in Cloud @ machineID:[" + _machineId + "] password: [" + _password + 
+        	System.out.println("Connecting to Real-Time -- Optimized @ machineID:[" + _machineId + "] password: [" + _password + 
         							   "] AppKey: [" + _appKey + "]");
         	System.out.println("Using keystore file: " + _keystoreFile);
         }
@@ -624,8 +624,8 @@ public class SpeedGuideConsumer implements Runnable
 	{
 		_launchConsumer = false;
 
-		String connectStr = "Attempting to connect Elektron: [" + _host + "]";
-		m_viewController.setConnection(false, true, "Connection to Elektron in progress...");
+		String connectStr = "Attempting to connect ADS: [" + _host + "]";
+		m_viewController.setConnection(false, true, "Connection to ADS in progress...");
 		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
 		OmmConsumerConfig config = EmaFactory.createOmmConsumerConfig().host(_host);
 
@@ -642,8 +642,8 @@ public class SpeedGuideConsumer implements Runnable
 	{
 		_launchConsumer = false;
 
-		String connectStr = "Attempting to connect ERT in Cloud";
-		m_viewController.setConnection(false, true, "Connection to ERT in Cloud in progress...");
+		String connectStr = "Attempting to connect Real-Time -- Optimized";
+		m_viewController.setConnection(false, true, "Connection to Real-Time -- Optimized in progress...");
 		m_viewController.updateStatus(connectStr, StatusIndicator.REQUEST);
 		
 		// Configuration
@@ -815,6 +815,7 @@ public class SpeedGuideConsumer implements Runnable
 		innerElementList.add(EmaFactory.createElementEntry().ascii("Host", _streamingEndpoint));
 		innerElementList.add(EmaFactory.createElementEntry().ascii("Port", _streamingPort));
 		innerElementList.add(EmaFactory.createElementEntry().intValue("EnableSessionManagement", 1));
+		innerElementList.add(EmaFactory.createElementEntry().intValue("CompressionThreshold", 300));
 		
 		elementMap.add(EmaFactory.createMapEntry().keyAscii("Channel_1", MapEntry.MapAction.ADD, innerElementList));
 		innerElementList.clear();

@@ -27,7 +27,7 @@ public class SpeedGuide extends Application
 	}
 
 	public static final String NEWLINE = System.getProperty("line.separator");
-	public static final String VER_CODE = "3.0.1";
+	public static final String VER_CODE = "3.1.0";
     public SpeedGuideConsumer m_consumer = new SpeedGuideConsumer();
     private boolean m_debug = false;
 
@@ -75,7 +75,7 @@ public class SpeedGuide extends Application
 			if ( splash != null )
 				splash.close();
 			
-	        // Attempt to Connect into the configured server (Elektron or ERT in Cloud)
+	        // Attempt to Connect into the configured server (ADS or Refinitiv Real-Time -- Optimized)
 	        connectionController.connect();
 		} catch  (Exception e) {
 			System.out.print("Exception in Application Start: ");
@@ -111,10 +111,10 @@ public class SpeedGuide extends Application
     		System.out.println("  > java -jar SpeedGuide.jar [options]  or"+NEWLINE);
     		System.out.println("  > SpeedGuide.exe [options] <Windows only>"+NEWLINE);
     		System.out.println("Options:"+NEWLINE);
-    		System.out.println("************* Elektron Connection Parameters **************");
-    		System.out.println("  --host=hostname:port    Required. Elektron Server address/hostname and port of your Market Data server.");
-    		System.out.println("                          Syntax: <host/ip>:<port>.  Eg: elektron:14002 or 192.168.1.1:14002");
-			System.out.println("  --service=serviceName   Required. Elektron Service Name providing market data content.");
+    		System.out.println("************* ADS Connection Parameters **************");
+    		System.out.println("  --host=hostname:port    Required. ADS Server address/hostname and port of your Real-Time Distribution Server.");
+    		System.out.println("                          Syntax: <host/ip>:<port>.  Eg: myserver:14002 or 192.168.1.1:14002");
+			System.out.println("  --service=serviceName   Required. ADS Service Name providing market data content.");
 			System.out.println("                          Eg: ELEKTRON_AD.");
 			System.out.println("  --user=userName         Optional. DACS User name required if authentication is enabled on server.");
 			System.out.println("                          Note: if no user name is provided, the utility will use your desktop login");
@@ -123,12 +123,12 @@ public class SpeedGuide extends Application
 			System.out.println("  --position=Position     Optional. DACS Position if authentication is enabled on server.");
 			System.out.println("                          Position has no default.");
 			System.out.println(NEWLINE);
-    		System.out.println("************* ERT in Cloud Connection Parameters **************");			
-    		System.out.println("  --machineId=machine ID  Required. ERT in Cloud Machine ID/User required for OAuth authentication.");
+    		System.out.println("************* Refinitiv Real-Time -- Optimized Connection Parameters **************");			
+    		System.out.println("  --machineId=machine ID  Required. Refinitiv Real-Time -- Optimized Machine ID/User required for OAuth authentication.");
     		System.out.println("                          Eg: GE-A-00000000-1-8888");
-			System.out.println("  --password=password     Required. ERT in Cloud password required for OAuth authentication.");
+			System.out.println("  --password=password     Required. Refinitiv Real-Time -- Optimized password required for OAuth authentication.");
 			System.out.println("                          Eg: Sunshine_1_UserPass");
-			System.out.println("  --appKey=App Key     	  Required. ERT in Cloud AppKey or Client ID required for server authentication.");
+			System.out.println("  --appKey=App Key     	  Required. Refinitiv Real-Time -- Optimized AppKey or Client ID required for server authentication.");
 			System.out.println("                          Eg: x888x8x88888888x88888x88x8888xx88x88888x");
 			System.out.println("  --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.");
 			System.out.println("                          Default: SpeedGuide provides a file for convenience.");
@@ -137,10 +137,10 @@ public class SpeedGuide extends Application
 			System.out.println(NEWLINE);
 			System.out.println("  --d[ebug]               Debug Mode.  Display verbose messages to the console");
 			System.out.println("  --h[elp]                Prints this screen"+NEWLINE);
-			System.out.println("If neither the required parameters for the Elektron or ERT in Cloud parameters are specified, the utility will prompt the user.");
+			System.out.println("If neither the required parameters for the ADS or Refinitiv Real-Time -- Optimized parameters are specified, the utility will prompt the user.");
 			System.out.println(NEWLINE);
 			System.out.println("Example:");
-			System.out.println("  > SpeedGuide.exe --host=elektron:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1");
+			System.out.println("  > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1");
 			System.out.println("  > SpeedGuide.exe --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass --appKey=x888x8x88888888x88888x88x8888xx88x88888x");
     		stop();
     	}

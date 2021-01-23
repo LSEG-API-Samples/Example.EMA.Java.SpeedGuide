@@ -25,7 +25,7 @@ import javafx.stage.StageStyle;
 //
 public class SpeedGuideConnection
 {
-	// ERT in Cloud commandline parameters
+	// Real-Time -- Optimized commandline parameters
 
 	public class ElektronConnection
 	{
@@ -110,7 +110,7 @@ public class SpeedGuideConnection
 	@FXML private TextField		f_position;
 	@FXML private Button		f_elektron_connectButton;
 	
-	// ERT Properties
+	// Real-Time -- Optimized Properties
 	@FXML private TextField		f_machineId;
 	@FXML private TextField		f_password;
 	@FXML private TextField		f_appKey;

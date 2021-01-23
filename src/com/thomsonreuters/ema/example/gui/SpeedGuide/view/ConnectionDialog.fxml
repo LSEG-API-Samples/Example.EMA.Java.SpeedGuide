@@ -14,13 +14,13 @@
 
 <TabPane fx:id="layout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="359.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.thomsonreuters.ema.example.gui.SpeedGuide.view.SpeedGuideConnection">
   <tabs>
-    <Tab text="Elektron">
+    <Tab text="ADS">
       <content>
         <AnchorPane layoutY="89.0">
                <children>
                   <VBox alignment="CENTER_LEFT" layoutX="5.0" layoutY="6.0" prefHeight="28.0" prefWidth="564.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="258.0" text="Elektron/TREP Connection parameters:">
+                        <Label prefHeight="20.0" prefWidth="258.0" text="ADS/RTDS Connection parameters:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -46,7 +46,7 @@
                         <Label text="User:" GridPane.rowIndex="2" />
                         <Label text="Position:" GridPane.rowIndex="3" />
                         <Label text="Application ID:" GridPane.rowIndex="4" />
-                        <Label text="Required.  Hostname/IP of Elektron server.&#10;Syntax: hostname:port.  Eg: elektron:14002" wrapText="true" GridPane.columnIndex="2" />
+                        <Label text="Required.  Hostname/IP of ADS.&#10;Syntax: hostname:port.  Eg: myserver:14002" wrapText="true" GridPane.columnIndex="2" />
                         <Label text="Required.  Market Data Service.&#10;Eg: ELEKTRON_DD" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="Optional.   Login username.&#10;Default: desktop login" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <Label text="Optional.  DACS Position variable.&#10;Default: None" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -62,13 +62,13 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="ERT in Cloud">
+    <Tab text="Real-Time -- Optimized">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <VBox layoutX="6.0" layoutY="9.0" prefHeight="31.0" prefWidth="594.0">
                      <children>
-                        <Label prefHeight="19.0" prefWidth="436.0" text="ERT in Cloud Connection parameters:">
+                        <Label prefHeight="19.0" prefWidth="436.0" text="Real-Time -- Optimized Connection parameters:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -90,7 +90,7 @@
                         <Label text="User/Machine ID:" />
                         <Label text="Password:" GridPane.rowIndex="1" />
                         <Label text="AppKey:" GridPane.rowIndex="2" />
-                        <Label text="Required.  ERT in Cloud Machine ID.&#10;Eg: GE-A-00000000-1-8888" GridPane.columnIndex="2" />
+                        <Label text="Required.  Real-Time -- Optimized Machine ID.&#10;Eg: GE-A-00000000-1-8888" GridPane.columnIndex="2" />
                         <Label text="Required.  OAuth Password.&#10;Eg: Sunshine_1_UserPass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="Required.  Application Key / Client ID.&#10;Eg: x888x8x88888888x88888x88x8888xx88x88888x" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <TextField fx:id="f_machineId" GridPane.columnIndex="1" />
