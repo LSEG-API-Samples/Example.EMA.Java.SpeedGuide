@@ -7,6 +7,9 @@
     -fx-font: 12px "System";
 }
 
+.tab-pane *.tab-header-background {
+    -fx-background-color: #0f000d12;
+}
 
 /*
  * Status Pane
