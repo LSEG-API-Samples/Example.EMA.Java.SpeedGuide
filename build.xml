@@ -17,7 +17,7 @@
 	<property name="emaj.libs" value="${env.ELEKTRON_JAVA_HOME}/Elektron-SDK-BinaryPack/Java/Ema/Libs"/>       
 	<property name="etaj.libs" value="${env.ELEKTRON_JAVA_HOME}/Java/Eta/Libs"/>
     <property name="java.libs" value="${env.JAVA_HOME}/lib"/>
-    <property name="app.resource" value="com/thomsonreuters/ema/example/gui/SpeedGuide/view"/>
+    <property name="app.resource" value="com/refinitiv/ema/example/gui/SpeedGuide/view"/>
     
 	<target name="init">
 		<echo message="Creating a directory for the compiler output" />
@@ -61,7 +61,7 @@
     </target>
     
     <target name="run" depends="compile">
-       <java dir="${bin.dir}" classname="com.thomsonreuters.ema.example.gui.SpeedGuide.SpeedGuide" fork="true">
+       <java dir="${bin.dir}" classname="com.refinitiv.ema.example.gui.SpeedGuide.SpeedGuide" fork="true">
             <arg line="${args}"/>
             <classpath refid="app.classpath"/>
        </java>

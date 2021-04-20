@@ -152,7 +152,7 @@ The utility was developed using the [Refinitiv Real-Time SDK - Java](https://dev
 
 Required software components:
 
-* [Refinitiv Real-Time SDK - Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java) (1.2 or greater) - Refinitiv interface to streaming, real-time services.
+* [Refinitiv Real-Time SDK - Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java) (2.0.1.L1 or greater) - Refinitiv interface to streaming, real-time services.
 * [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8. 
 
 Optional software components:
@@ -195,6 +195,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 * **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
 * **Nick Zincone** - Release 3.0.  Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services.
 * **Nick Zincone** - Release 3.1.  Fixed connectivity issues and re branded.
+* **Nick Zincone** - Release 4.0.  Fixed dictionary download issue; rebuilt using newly branded (Refinitiv) SDK
 
 ## License
 
