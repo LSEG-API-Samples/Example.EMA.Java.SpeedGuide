@@ -195,7 +195,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 * **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
 * **Nick Zincone** - Release 3.0.  Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services.
 * **Nick Zincone** - Release 3.1.  Fixed connectivity issues and re branded.
-* **Nick Zincone** - Release 4.0.  Fixed dictionary download issue; rebuilt using newly branded (Refinitiv) SDK
+* **Nick Zincone** - Release 3.2.  Fixed dictionary download issue; rebuilt using newly branded (Refinitiv) SDK
 
 ## License
 
