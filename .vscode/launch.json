@@ -1,0 +1,50 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (No args)",
+            "request": "launch",
+            "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
+            "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
+            "args": "--keyStore=src/main/distribution/keystore.jks"
+        },
+        {
+            "type": "java",
+            "name": "Debug (ADS)",
+            "request": "launch",
+            "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
+            "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
+            "args": "--host=${env:RTDS_HOST} --service=ELEKTRON_DD"
+        },
+        {
+            "type": "java",
+            "name": "Debug (RTO V1)",
+            "request": "launch",
+            "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
+            "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
+            "args": ["--keyStore=src/main/distribution/keystore.jks", "--machineId=${env:MACHINE_ID}", 
+                     "--password=${env:MACHINE_PASSWD}", "--appKey=${env:APPKEY}"]
+        },
+        {
+            "type": "java",
+            "name": "Debug (RTO V2)",
+            "request": "launch",
+            "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
+            "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
+            "args": ["--keyStore=src/main/distribution/keystore.jks", "--clientId=${env:CLIENT_ID}", 
+                     "--clientSecret=${env:CLIENT_SECRET}"]
+        },
+        {
+            "type": "java",
+            "name": "Debug (debug logging)",
+            "request": "launch",
+            "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
+            "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
+            "args": ["--keyStore=src/main/distribution/keystore.jks", "--d"]
+        },                              
+    ]
+}
