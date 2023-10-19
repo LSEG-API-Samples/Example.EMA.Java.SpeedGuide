@@ -41,11 +41,11 @@
                         <RowConstraints maxHeight="107.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Host:" />
-                        <Label text="Service:" GridPane.rowIndex="1" />
-                        <Label text="User:" GridPane.rowIndex="2" />
-                        <Label text="Position:" GridPane.rowIndex="3" />
-                        <Label text="Application ID:" GridPane.rowIndex="4" />
+                        <Label text="Host:" textAlignment="RIGHT" GridPane.halignment="RIGHT" />
+                        <Label text="Service:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="User:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label text="Position:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <Label text="Application ID:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                         <Label text="Required.  Hostname/IP of ADS.&#10;Syntax: hostname:port.  Eg: myserver:14002" wrapText="true" GridPane.columnIndex="2" />
                         <Label text="Required.  Market Data Service.&#10;Eg: ELEKTRON_DD" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label text="Optional.   Login username.&#10;Default: desktop login" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
@@ -87,8 +87,8 @@
                       <RowConstraints maxHeight="96.00000610351563" minHeight="6.0" prefHeight="63.999985504150374" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="ID:" />
-                        <Label text="Password:" GridPane.rowIndex="1" />
+                        <Label text="ID:" GridPane.halignment="RIGHT" />
+                        <Label text="Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                         <Label text="Required.  Client ID or Service Account ID.&#10;Eg: GE-XXXXXXXXXXXX" GridPane.columnIndex="2" GridPane.vgrow="ALWAYS" />
                         <Label prefHeight="47.0" prefWidth="296.0" text="Required.  Client Secret&#10;Eg: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <TextField fx:id="f_clientId" onKeyReleased="#onRTO_V2KeyReleased" prefHeight="34.0" prefWidth="338.0" GridPane.columnIndex="1" />
@@ -124,9 +124,9 @@
                         <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label text="User/Machine ID:" />
-                        <Label text="Password:" GridPane.rowIndex="1" />
-                        <Label text="AppKey:" GridPane.rowIndex="2" />
+                        <Label text="User/Machine ID:" GridPane.halignment="RIGHT" />
+                        <Label text="Password:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="AppKey:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                         <Label text="Required.  Machine ID.&#10;Eg: GE-A-00000000-1-8888" GridPane.columnIndex="2" GridPane.vgrow="ALWAYS" />
                         <Label text="Required.  Password.&#10;Eg: Sunshine_1_UserPass" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label prefHeight="54.0" prefWidth="373.0" text="Required.  Application Key / Client ID.&#10;Eg: fba9dx0a9b9x0a9794d9c1b40ec82ab990x09x0x" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />

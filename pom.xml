@@ -7,10 +7,16 @@
     <groupId>com.lseg.ema.example.gui</groupId>
     <artifactId>SpeedGuide</artifactId>
     <version>4.0.0</version>
+    <organization>
+        <name>London Stock Exchange</name>
+    </organization>
+    <inceptionYear>2018</inceptionYear>
+    <description>Tool to navigate LSEG SpeedGuide market data</description>    
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -100,7 +106,6 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <forceCreation>true</forceCreation>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>                
                 <executions>
@@ -118,6 +123,22 @@
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/versions/9/module-info.class</exclude>                                        
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/LICENSE*</exclude>
+                                        <exclude>META-INF/NOTICE*</exclude>
+                                        <exclude>META-INF/DEPENDENCIES</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>                            
                         </configuration>
                     </execution>
                 </executions>
@@ -151,6 +172,7 @@
                                 <timeout>10</timeout>
                                 <timeoutErr>true</timeoutErr>
                             </splash>
+                            <icon>src/main/resources/LSEG Icon.ico</icon>
                         </configuration>
                     </execution>
                 </executions>

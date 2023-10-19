@@ -1,5 +1,5 @@
 # Speed Guide
-The Speed Guide utility allows users and developers, who do not have access to **Refinitiv Eikon/Refinitiv Workspace** desktop applications, a simple and quick way to easily browse market data content available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
+The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace/Eikon** desktop applications, a simple and quick way to easily browse market data content available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
 
 
 # Overview
@@ -12,7 +12,7 @@ The Speed Guide tool registers for Snapshot only data content (i.e, non-streamin
 
 ## Utility download
 
-The executable program and Readme is available for Download within the [Refinitiv Developer Platform](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/download#refinitiv-real-time-sdk-tools).
+The executable program and Readme is available for Download within the [LSEG Developer Platform](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java/download).
 
 ## Running the Utility
 
@@ -28,7 +28,7 @@ Double-clicking either the _.jar_ or _.exe_ file will not pass any required conn
 
 If the required parameters are not specified, the application will present a [Connection Dialog](#usage) requesting for the required connection details.  In either case, no console is involved thus no additional messages, such as log messages, can be viewed.
 
-**Note**: Launching the executable JAR requires the [Javaw](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html) program to open it.  When not associated, you will be presented with a request such as:
+**Note**: Launching the executable JAR requires the [Javaw](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html) program to open it.  When not associated, you will be presented with a request such as:
 
 ![program](images/jarExtension.png)
 
@@ -68,12 +68,19 @@ At the console, you can pass command-line parameters to the utility:
                             Position has no default.
         
     ************* Real-Time -- Optimized Connection Parameters **************
-    --machineId=machine ID  Required. Real-Time -- Optimized Machine ID/User required for OAuth authentication.
+    **** Version 1 Authentication >
+    --machineId=machine ID  Required. Real-Time -- Optimized Machine ID/User required for OAuth Password Grant.
                             Eg: GE-A-00000000-1-8888
-    --password=password     Required. Real-Time -- Optimized password required for OAuth authentication.
+    --password=password     Required. Real-Time -- OPtimized password required for OAuth Password Grant.
                             Eg: Sunshine_1_UserPass
-    --appKey=App Key        Required. Real-Time -- Optimized AppKey or Client ID required for server
-                            authentication. Eg: x888x8x88888888x88888x88x8888xx88x88888x
+    --appKey=App Key        Required. Real-Time -- Optimized AppKey or Client ID required for server authentication.
+                            Eg: x888x8x88888888x88888x88x8888xx88x88888x
+    **** Version 2 Authentication >
+    --clientId=Client ID    Required. Real-Time -- Optimized Client/Service Account ID required for OAuth Client Credentials.
+                            Eg: GE-XXXXXXXXXXXX
+    --clientSecret=secret   Required. Real-Time -- Optimized Client secret required for OAuth Client Credentials.
+                            Eg: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
     --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.
                             Default: SpeedGuide provides a file for convenience.
     --keyStorePasswd=passwd Optional. Password associated with the specified keystore file.
@@ -83,19 +90,22 @@ At the console, you can pass command-line parameters to the utility:
     --h[elp]                Prints this screen
 The following example shows the command-line parameters to connect to either an ADS or directly to Real-Time -- Optimized in the cloud.
 
-    > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 
-                     --position=127.0.0.1
-    > SpeedGuide.exe --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass 
-                     --appKey=x888x8x88888888x88888x88x8888xx88x88888x
+  > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
+  > SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+
 ## Usage
 
 When launching the utility specifying insufficient command-line options, the user will be presented with a Connection dialog.  The user can choose how they want to access the platform, i.e. through their deployed real-time services, via ADS:
 
 ![connect](images/connect.png)
 
-Or directly to the cloud via Real-Time -- Optimized:
+Or directly to the cloud via Real-Time -- Optimized (Version 1 authentication):
 
-![connect](images/connectERT.png)
+![connect](images/connectRTOv1.png)
+
+Or directly to the cloud via Real-Time -- Optimized (Version 2 authentication):
+
+![connect](images/connectRTOv2.png)
 
 The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be made to your specified server, the utility will launch the root Speed Guide item, i.e. **REFINITIV**.
 
@@ -130,7 +140,7 @@ For example:
 
 ![fieldlist](images/fieldList.png)
 
-Although not presented in a user-friendly display form, the native list of fields not only provides the user the ability to research all available fields for a given asset, but also the opportunity to better understand the structure of Refinitiv Data. 
+Although not presented in a user-friendly display form, the native list of fields not only provides the user the ability to research all available fields for a given asset, but also the opportunity to better understand the structure of LSEG Data. 
 
 #### Chains
 
@@ -140,49 +150,37 @@ To demonstrate, we manually entered the Nasdaq Top 25 index _.AV.O_:
 
 ![Chain](images/Chain.png)
 
-We can see from above, the record contains a preset number of elements (1-14) and the ability to pull up the next group of elements within the _next link_.  For a detailed outline of Chains, refer to the article: [Simple Chain Objects](https://developers.refinitiv.com/article/simple-chain-objects-ema-part-1) within the Developer Community.
+We can see from above, the record contains a preset number of elements (1-14) and the ability to pull up the next group of elements within the _next link_.  For a detailed outline of Chains, refer to the article: [Simple Chain Objects](https://developers.lseg.com/article/simple-chain-objects-ema-part-1) within the Developer Community.
 
 Feel free to navigate through the guide to discover many other assets and data elements offered by Refinitiv.
 
 # Solution Code
 
-The utility was developed using the [Refinitiv Real-Time SDK - Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java) and Java's GUI library Java 8 - JavaFx.
+The utility was developed using the [Refinitiv Real-Time SDK - Java](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java) and Java's GUI library Java 8 - JavaFx.
 
 ## Prerequisites
 
 Required software components:
 
-* [Refinitiv Real-Time SDK - Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java) (2.0.1.L1 or greater) - Refinitiv interface to streaming, real-time services.
-* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8. 
-
-Optional software components:
-
-* [Eclipse](https://www.eclipse.org/efxclipse/install.html) - IDE for Java development (tested)
-* Other IDE's such as: [NetBeans](https://netbeans.org/), [Intellij IDEA](https://www.jetbrains.com/idea/)
-* [JavaFX Scene Builder](http://gluonhq.com/labs/scene-builder/) - UI to author JavaFX GUI-based applications
-* [Ant](https://ant.apache.org/) - A command-line tool to compile and run the SpeedGuide utility 
+* [Refinitiv Real-Time SDK - Java](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java) (2.0.1.L1 or greater) - Refinitiv interface to streaming, real-time services.
+* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8.
+* [VScode](https://code.visualstudio.com/Download) - Visual Studio Code
 
 
 ## Building and running
 
-This package includes an Ant build.xml file to build and execute the SpeedGuide utility.  The build.xml Ant file requires the following environment variables:
+The Java FXML project is a Maven-based solution that generates the desired package for distribution.  As defined within the pom.xml configuration file, the packaging uses
+the Launch4j plugin to help prepare a Windows package.  Users can optionally remove this stanza if there is no desire to generate an EXE file for Windows.  If
+there is a desire to use this plugin, it assumes the following JDK installation (Note: you can update to suit your environment)
 
 ```
-   JAVA_HOME          - Root directory of your JDK 8 environment
-   ELEKTRON_JAVA_HOME - Root directory of your (EMA) Real-Time Java API installation
+  <jre>
+      <path>C:\Program Files\Java\jdk1.8.0_202</path>                            
+      <minVersion>1.8.0</minVersion>
+  </jre>
 ```
 
-Once setup, you can build and run the utility as follows:
-
-```
-To build:
-> ant
-
-To run:
-> ant run
-```
-
-
+The project was built using VS Code and Maven.
 
 ## Contributing
 
@@ -190,12 +188,18 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Authors
 
-* **Susana Chang** - Release 1.1.  *Initial work*
-* **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder to generate FXML*
-* **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
-* **Nick Zincone** - Release 3.0.  Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services.
-* **Nick Zincone** - Release 3.1.  Fixed connectivity issues and re branded.
+* **Nick Zincone** - Release 4.0.0 Added access to Real-Time -- Optimized v2 authentication.  Rebranded (LSEG).
 * **Nick Zincone** - Release 3.2.  Fixed dictionary download issue; rebuilt using newly branded (Refinitiv) SDK
+* **Nick Zincone** - Release 3.1.  Fixed connectivity issues and re branded.
+* **Nick Zincone** - Release 3.0.  Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services.
+* **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
+* **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder to generate FXML*
+* **Susana Chang** - Release 1.1.  *Initial work*
+
+
+
+
+
 
 ## License
 
