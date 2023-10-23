@@ -18,7 +18,7 @@
             "request": "launch",
             "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
             "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
-            "args": "--host=${env:RTDS_HOST} --service=ELEKTRON_DD"
+            "args": "--host=${env:RTDS_HOST}"
         },
         {
             "type": "java",
@@ -27,7 +27,7 @@
             "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
             "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
             "args": ["--keyStore=src/main/distribution/keystore.jks", "--machineId=${env:MACHINE_ID}", 
-                     "--password=${env:MACHINE_PASSWD}", "--appKey=${env:APPKEY}"]
+                     "--password=${env:MACHINE_PASSWD}", "--appKey=${env:APPKEY}", "--region=eu-west-1"]
         },
         {
             "type": "java",
@@ -36,7 +36,7 @@
             "mainClass": "com.lseg.ema.example.gui.SpeedGuide",
             "vmArgs": "-splash:src/main/resources/SpeedGuide.png",
             "args": ["--keyStore=src/main/distribution/keystore.jks", "--clientId=${env:CLIENT_ID}", 
-                     "--clientSecret=${env:CLIENT_SECRET}"]
+                     "--clientSecret=${env:CLIENT_SECRET}", "--region=ap-northeast-1"]
         },
         {
             "type": "java",

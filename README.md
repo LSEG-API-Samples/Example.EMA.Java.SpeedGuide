@@ -1,18 +1,18 @@
 # Speed Guide
-The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace/Eikon** desktop applications, a simple and quick way to easily browse market data content available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and instructions to build the tool using the source code available within this project.
+The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace/Eikon** desktop applications, a simple and quick way to easily browse market data content available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and basic instructions to build the tool using the source code available within this project.
 
 
 # Overview
 
 The Speed Guide utility allows users and developers who do not have access to the desktop application to browse market data content available from Refinitiv's Data Platform.  The utility provides access to either  cloud-based, Real-Time -- Optimized services or directly to your deployed Real-Time servers.
 
-When building applications consuming streaming market data, developers often need a list of RICs (Reuters Instrument Codes), and the values they contain, for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
+When building applications consuming streaming market data, developers often need a list of RICs (Refinitiv Instrument Codes), and the values they contain, for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
 
 The Speed Guide tool registers for Snapshot only data content (i.e, non-streaming).
 
 ## Utility download
 
-The executable program and Readme is available for Download within the [LSEG Developer Platform](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java/download).
+The executable program and Readme is available for Download within the [LSEG Developer Platform](https://developers.lseg.com/en/tools-catalog/speedguide).
 
 ## Running the Utility
 
@@ -55,11 +55,12 @@ At the console, you can pass command-line parameters to the utility:
   
 #### Command-line Options
 
+    --service=serviceName   Optional. Service Name providing market data content.
+                            Eg: ELEKTRON_DD. Default: Determined from Directory response.
+
     ************* ADS Connection Parameters **************
     --host=hostname:port    Required. ADS Server address/hostname and port of your Market Data
                             server. Syntax: <host/ip>:<port>.  Eg: elektron:14002 or 192.168.1.1:14002
-    --service=serviceName   Required. AD Service Name providing market data content.
-                            Eg: ELEKTRON_AD.
     --user=userName         Optional. DACS User name required if authentication is enabled on server.
                             Note: if no user name is provided, the utility will use your desktop login
     --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.
@@ -68,6 +69,9 @@ At the console, you can pass command-line parameters to the utility:
                             Position has no default.
         
     ************* Real-Time -- Optimized Connection Parameters **************
+    --region=location       Optional. Specify the location to connect within the cloud.
+	                          Eg: ap-northeast-1 (Asia) eu-west-1 (EU) us-east-2 (US). Default: us-east-1
+
     **** Version 1 Authentication >
     --machineId=machine ID  Required. Real-Time -- Optimized Machine ID/User required for OAuth Password Grant.
                             Eg: GE-A-00000000-1-8888
@@ -75,6 +79,7 @@ At the console, you can pass command-line parameters to the utility:
                             Eg: Sunshine_1_UserPass
     --appKey=App Key        Required. Real-Time -- Optimized AppKey or Client ID required for server authentication.
                             Eg: x888x8x88888888x88888x88x8888xx88x88888x
+
     **** Version 2 Authentication >
     --clientId=Client ID    Required. Real-Time -- Optimized Client/Service Account ID required for OAuth Client Credentials.
                             Eg: GE-XXXXXXXXXXXX
@@ -85,13 +90,15 @@ At the console, you can pass command-line parameters to the utility:
                             Default: SpeedGuide provides a file for convenience.
     --keyStorePasswd=passwd Optional. Password associated with the specified keystore file.
                             Default: SpeedGuide includes the password for the default keystore file.
+
          
     --d[ebug]               Debug Mode.  Display verbose messages to the console
     --h[elp]                Prints this screen
 The following example shows the command-line parameters to connect to either an ADS or directly to Real-Time -- Optimized in the cloud.
 
-  > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
-  > SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+* SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
+* SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+* SpeedGuide.exe --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
 
 ## Usage
 
@@ -109,7 +116,7 @@ Or directly to the cloud via Real-Time -- Optimized (Version 2 authentication):
 
 The _Status Pane_ at the bottom of the main window provides some general feedback, whether success or failure.  In the case where a successful connection can be made to your specified server, the utility will launch the root Speed Guide item, i.e. **REFINITIV**.
 
-**Note**: While the utility will launch the "REFINITIV" RIC, which represents the root code of the Speed Guide pages, the utility is extremely useful for developers to visualize any other instrument available within the data platform.
+**Note**: While the utility will launch the "REFINITIV" RIC, which represents the root code of the Speed Guide pages, the utility is extremely useful for developers to visualize any other instrument available as well as optionally selecting an appropriate _Region_ when connecting to the cloud.
 
 ![main](images/main.png)
 
@@ -126,9 +133,10 @@ The top navigation menu provides:
 * A _Next_ button to go to next page (if it exists).
 * An input text field that displays the RIC for the current page, and allows entering a RIC to request.
 * A _Connect_ button when no connection has been established
-* An _Available Services_ drop-down providing the list of services available within the connected server
+* For cloud-based connections, the _RTO Region_ provides the opportunity to switch your region
+* A _Service_ specification drop-down providing the list of services available within the connected server
 
-During normal operation, or possibly at startup, the _Status Pane_ will highlight issues appropriately.  In the case where the user specifies an incorrect service, the _Available Services_ drop-down will give them the opportunity to select a valid one.
+During normal operation, or possibly at startup, the _Status Pane_ will highlight issues appropriately.  In the case where the user specifies an incorrect service, the _Service_ drop-down will give them the opportunity to select a valid one.
 
 ![main](images/invalid.png)
 
@@ -144,7 +152,7 @@ Although not presented in a user-friendly display form, the native list of field
 
 #### Chains
 
-Navigating through the guide, you will likely come across some more complex data structures.  For example, some market data elements, such as the Nasdaq Top 25, are represented as a collection of elements, or also referred to as a **_Chain_**.  A _Chain_ contains a collection of elements represented within a preset number of underlying fields within a market data record.  In the case of the Nasdaq Top 25, the underlying elements represent the Top 25 trading equities.  Because a Chain is represented within a simple _MarketPrice_ structure containing a preset number of fields, the structure offers the ability to pull up the next link within this collection.
+Navigating through the guide, you will likely come across some more complex data structures.  For example, some market data elements, such as the Nasdaq Top 25, are represented as a collection of elements referred to as a **_Chain_**.  A _Chain_ contains a dynamically-sized collection of elements represented within a static list of underlying fields within a market data record.  In the case of the Nasdaq Top 25, there will be a total of 25 links.  Because a Chain is represented within a simple _MarketPrice_ structure containing a static number of links, the structure offers the ability to pull up the next link within this collection to allow applications to navigate through the chain to retrieve the desired collection.
 
 To demonstrate, we manually entered the Nasdaq Top 25 index _.AV.O_:
 
@@ -175,7 +183,7 @@ there is a desire to use this plugin, it assumes the following JDK installation 
 
 ```
   <jre>
-      <path>C:\Program Files\Java\jdk1.8.0_202</path>                            
+      <path>C:\Program Files\Common Files\Oracle\javapath</path>                            
       <minVersion>1.8.0</minVersion>
   </jre>
 ```
@@ -188,13 +196,18 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Authors
 
-* **Nick Zincone** - Release 4.0.0 Added access to Real-Time -- Optimized v2 authentication.  Rebranded (LSEG).
-* **Nick Zincone** - Release 3.2.  Fixed dictionary download issue; rebuilt using newly branded (Refinitiv) SDK
-* **Nick Zincone** - Release 3.1.  Fixed connectivity issues and re branded.
-* **Nick Zincone** - Release 3.0.  Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services.
-* **Nick Zincone** - Release 2.1.  Added DACS fields required for login to Elektron.
-* **Nick Zincone** - Release 2.0.  *Additional error checking/Utilized JavaFX Scene Builder to generate FXML*
-* **Susana Chang** - Release 1.1.  *Initial work*
+| **Name** | **Release** | **Details** |
+| --- | --- | --- |
+| Nick Zincone | Release 4.1.0 | Ability to specify region |
+|  |  | Default service based on Directory interrogation |
+| Nick Zincone | Release 4.0.0 | Added access to Real-Time -- Optimized v2 authentication. Rebranded (LSEG) |
+| Nick Zincone | Release 3.2 | Fixed dictionary download issue; rebuilt using newly branded (Refinitiv) SDK |
+| Nick Zincone | Release 3.1 | Fixed connectivity issues and re branded. |
+| Nick Zincone | Release 3.0 | Added access to Real-Time -- Optimized, formally ERT in Cloud, streaming services. |
+| Nick Zincone | Release 2.1 | Added DACS fields required for login to Elektron. |
+| Nick Zincone | Release 2.0 | Additional error checking |
+|  |  | Utilized JavaFX Scene Builder to generate FXML |
+| Susana Chang | Release 1.1 | Initial implementation |
 
 
 

@@ -3,8 +3,8 @@
 /*
  * Service ComboBox
  */
-.combo-box .cell{
-    -fx-font: 12px "System";
+.combo-box .list.cell{
+    -fx-font-size: 12px "System";
 }
 
 .tab-pane *.tab-header-background {

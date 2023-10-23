@@ -22,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -30,6 +31,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import com.lseg.ema.example.gui.SpeedGuide;
@@ -46,8 +48,11 @@ public class SpeedGuideViewController implements Initializable
 	@FXML private Button			next;
 	@FXML private TextField			ric;
 	@FXML private Button			submit;
-	@FXML private Label				servicesLabel;
+	@FXML private HBox 				regionsHBox;
+	@FXML private ComboBox<String>	regions;
+	@FXML private HBox				servicesHBox;
 	@FXML private ComboBox<String>	services;
+	@FXML private HBox				connectHBox;
 	@FXML private Button			connect;
 	@FXML private TextArea			textArea;
 	@FXML private ScrollPane 		statusPane;
@@ -64,10 +69,14 @@ public class SpeedGuideViewController implements Initializable
 	private BooleanProperty m_connecting = new SimpleBooleanProperty(false);
 	private BooleanProperty m_connected = new SimpleBooleanProperty(false);
 
+	// RTO-enabled
+	private BooleanProperty m_rtoEnabled = new SimpleBooleanProperty(false);
+
 	private boolean  m_debug = false;
 	private SpeedGuideConsumer m_consumer;
 	private SpeedGuideConnection m_connection;
 
+	private ObservableList<String> m_regions = FXCollections.observableArrayList();
     private ObservableList<String> m_services = FXCollections.observableArrayList();
 
 	@Override		// Method called by the FXMLLoader when initialization is done
@@ -88,26 +97,51 @@ public class SpeedGuideViewController implements Initializable
         ric.disableProperty().bind(Bindings.when(m_connected).then(false).otherwise(true));
         submit.disableProperty().bind(Bindings.when(m_connected).then(false).otherwise(true));
 
-        // The connection button has many states.
+        // The region selection has the following states.
+        //		Enabled: 	When we are disconnected and need to manually select a different region
+        //		Disabled:	When we are in the process of trying to connect
+        //		Visible:	When we have no endpoint information.
+        //		Invisible:	When we are connected.	
+		regionsHBox.visibleProperty().bind(m_rtoEnabled);
+        regions.disableProperty().bind(m_connecting);
+
+		// Determine what to display within the "RTO Regions" combo box when the control becomes visible
+        regionsHBox.visibleProperty().addListener(new ChangeListener<Boolean>() {
+        	@Override public void changed(ObservableValue<? extends Boolean> o, Boolean oldVal, Boolean newVal)
+        	{
+        		// This will avoid a InvalidState Exception because we're not within the JavaFX thread
+    			Platform.runLater(new Runnable()
+    			{
+    				@Override
+    				public void run()
+    				{
+    	        		if ( newVal )
+    	        		{
+		        			regions.setItems(m_regions);
+		        			if (m_regions.contains(m_consumer.getRegion()))
+		        				regions.setValue(m_consumer.getRegion());
+		        			else
+		        				regions.setPromptText(m_consumer.getRegion());
+    	        		}
+    	        		else
+    	        			m_regions.clear();
+    				}
+    			});
+        	}
+        });		
+
+        // The connection button has the following states.
         //		Enabled: 	When we are disconnected and need to manually connect
         //		Disabled:	When we are in the process of trying to connect
         //		Visible:	When we are disconnected.
         //		Invisible:	When we are connected.
-        //		Managed:	When we are disconnected.  In this state, the button is visible and we want the
-        //					HBox to manage the layout of the button.
-        //		UnManaged:	When we are connected.  In this state, the button is invisible but we do not want
-        //					HBox to manage the layout of the button.  This allows us to properly display the
-        //					Services ComboBox within the HBox, right-aligned.
-        connect.visibleProperty().bind(Bindings.when(m_connected).then(false).otherwise(true));
+		connectHBox.visibleProperty().bind(Bindings.when(m_connected).then(false).otherwise(true));
         connect.disableProperty().bind(Bindings.when(m_connecting).then(true).otherwise(false));
-        connect.managedProperty().bind(connect.visibleProperty());
 
-        servicesLabel.visibleProperty().bind(Bindings.when(m_connected).then(true).otherwise(false));
-
-        services.visibleProperty().bind(Bindings.when(m_connected).then(true).otherwise(false));
+		servicesHBox.visibleProperty().bind(m_connected);
 
         // Determine what to display within the "Available Services" combo box when the control becomes visible
-        services.visibleProperty().addListener(new ChangeListener<Boolean>() {
+        servicesHBox.visibleProperty().addListener(new ChangeListener<Boolean>() {
         	@Override public void changed(ObservableValue<? extends Boolean> o, Boolean oldVal, Boolean newVal)
         	{
         		// This will avoid a InvalidState Exception because we're not within the JavaFX thread
@@ -145,8 +179,16 @@ public class SpeedGuideViewController implements Initializable
 		});
 	}
 
+	public void setRTOConnection(boolean rtoConnection) {
+		m_rtoEnabled.set(rtoConnection);
+	}
+
 	public boolean isConnected() {
 		return(m_connected.get());
+	}
+
+	public boolean isConnecting() {
+		return(m_connecting.get());
 	}
 
 	public void setConnectionViewController(SpeedGuideConnection connectionViewController) {
@@ -155,6 +197,11 @@ public class SpeedGuideViewController implements Initializable
 
 	public void setDebug(boolean debug) {
 		m_debug = debug;
+	}
+
+	public void addRegion(String region) {
+		if (!m_regions.contains(region))
+			m_regions.add(region);
 	}
 
 	public void addService(String service) {
@@ -223,10 +270,21 @@ public class SpeedGuideViewController implements Initializable
 	}
 
 	@FXML
+	private void selectedRegion() {
+		String selectedItem = regions.getSelectionModel().getSelectedItem();
+		if ( selectedItem != null) {
+			if (!selectedItem.equals(m_consumer.getRegion())) {
+				m_consumer.setRegion(selectedItem);
+				m_consumer.defineNewRegion();
+			}
+		}
+	}
+
+	@FXML
 	private void selectedService() {
 		String selectedItem = services.getSelectionModel().getSelectedItem();
 		if ( selectedItem != null) {
-	    	m_consumer.setService(services.getSelectionModel().getSelectedItem().toString());
+	    	m_consumer.setService(selectedItem);
 	   		m_consumer.subscribe(ric.getText().trim());
 		}
 	}

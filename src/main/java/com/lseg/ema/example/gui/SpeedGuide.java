@@ -34,7 +34,7 @@ public class SpeedGuide extends Application
 	}
 
 	public static final String NEWLINE = System.getProperty("line.separator");
-	public static final String VER_CODE = "4.0.0";
+	public static final String VER_CODE = "4.1.0";
     public SpeedGuideConsumer m_consumer = new SpeedGuideConsumer();
     private boolean m_debug = false;
 
@@ -142,6 +142,7 @@ public class SpeedGuide extends Application
     private void parseCmdLine() throws Exception
     {
     	Application.Parameters params = getParameters();
+		
     	if ( params.getRaw().contains("--h") || params.getRaw().contains("--help") ||
     		 params.getNamed().containsKey("h") || params.getNamed().containsKey("help"))
     	{
@@ -149,11 +150,12 @@ public class SpeedGuide extends Application
     		System.out.println("  > java -jar SpeedGuide.jar [options]  or"+NEWLINE);
     		System.out.println("  > SpeedGuide.exe [options] <Windows only>"+NEWLINE);
     		System.out.println("Options:"+NEWLINE);
+			System.out.println("  --service=serviceName   Optional. Service Name providing market data content.");
+			System.out.println("                          Eg: ELEKTRON_DD. Default: Determined from Directory response.");
+			System.out.println(NEWLINE);
     		System.out.println("************* ADS Connection Parameters **************");
     		System.out.println("  --host=hostname:port    Required. ADS Server address/hostname and port of your Real-Time Distribution Server.");
     		System.out.println("                          Syntax: <host/ip>:<port>.  Eg: myserver:14002 or 192.168.1.1:14002");
-			System.out.println("  --service=serviceName   Required. ADS Service Name providing market data content.");
-			System.out.println("                          Eg: ELEKTRON_AD.");
 			System.out.println("  --user=userName         Optional. DACS User name required if authentication is enabled on server.");
 			System.out.println("                          Note: if no user name is provided, the utility will use your desktop login");
 			System.out.println("  --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.");
@@ -162,6 +164,9 @@ public class SpeedGuide extends Application
 			System.out.println("                          Position has no default.");
 			System.out.println(NEWLINE);
     		System.out.println("************* Refinitiv Real-Time -- Optimized Connection Parameters **************");
+			System.out.println("  --region=location       Optional. Specify the location to connect within the cloud.");
+			System.out.println("                          Eg: ap-northeast-1 (Asia) eu-west-1 (EU) us-east-2 (US). Default: us-east-1");
+			System.out.println(NEWLINE);
 			System.out.println("**** Version 1 Authentication >");	
     		System.out.println("  --machineId=machine ID  Required. Real-Time -- Optimized Machine ID/User required for OAuth Password Grant.");
     		System.out.println("                          Eg: GE-A-00000000-1-8888");
@@ -184,8 +189,9 @@ public class SpeedGuide extends Application
 			System.out.println("If neither the required parameters for the ADS or Refinitiv Real-Time -- Optimized parameters are specified, the utility will prompt the user.");
 			System.out.println(NEWLINE);
 			System.out.println("Example:");
-			System.out.println("  > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1");
+			System.out.println("  > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_DD --user=testuser --appid=256 --position=127.0.0.1");
 			System.out.println("  > SpeedGuide.exe --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass --appKey=x888x8x88888888x88888x88x8888xx88x88888x");
+			System.out.println("  > SpeedGuide.exe --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1");
     		stop();
     	}
 

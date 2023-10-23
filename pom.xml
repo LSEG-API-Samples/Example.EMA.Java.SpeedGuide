@@ -6,11 +6,11 @@
 
     <groupId>com.lseg.ema.example.gui</groupId>
     <artifactId>SpeedGuide</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <organization>
         <name>London Stock Exchange</name>
     </organization>
-    <inceptionYear>2018</inceptionYear>
+    <inceptionYear>2017</inceptionYear>
     <description>Tool to navigate LSEG SpeedGuide market data</description>    
 
     <properties>
@@ -69,7 +69,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/src/main/resources/images</outputDirectory>
+                            <outputDirectory>${project.basedir}/src/main/resources/view/images</outputDirectory>
                             <resources>          
                                 <resource>
                                     <directory>src/main/java/com/lseg/ema/example/gui/view/images</directory>
@@ -162,8 +162,12 @@
                                 <!-- Additional classpath entries -->
                                 <mainClass>com.lseg.ema.example.gui.SpeedGuide</mainClass>                                
                             </classPath>
-                            <jre>
+                            <!-- <jre>
                                 <path>C:\Program Files\Java\jdk1.8.0_202</path>                            
+                                <minVersion>1.8.0</minVersion>
+                            </jre> -->
+                            <jre>
+                                <path>C:\Program Files\Common Files\Oracle\javapath</path>                            
                                 <minVersion>1.8.0</minVersion>
                             </jre>
                             <splash>

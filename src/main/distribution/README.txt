@@ -23,7 +23,7 @@ Double-clicking either the .jar or .exe file will not pass any required paramete
 will present a Connection Dialog requesting for these connection parameters.  In either case, no console is involved thus no
 additional messages, such as log messages, can be viewed.
 
-Note: Launching the executable JAR requires the Javaw (https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html) 
+Note: Launching the executable JAR requires the Javaw (https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html) 
 program to open it.  When not associated, you will be presented with a request to select a program.
 
 
@@ -54,11 +54,12 @@ Command-line Options
 
 Options:
 
+ --service=serviceName   Optional. Service Name providing market data content.
+                         Eg: ELEKTRON_DD. Default: Determined from Directory response.
+
 ************* ADS Connection Parameters **************
   --host=hostname:port    Required. Elektron Server address/hostname and port of your Market Data server.
                           Syntax: <host/ip>:<port>.  Eg: myserver:14002 or 192.168.1.1:14002
-  --service=serviceName   Required. ADS Service Name providing market data content.
-                          Eg: ELEKTRON_AD.
   --user=userName         Optional. DACS User name required if authentication is enabled on server.
                           Note: if no user name is provided, the utility will use your desktop login
   --appid=ApplicationId   Optional. DACS Application ID if authentication is enabled on server.
@@ -67,6 +68,9 @@ Options:
                           Position has no default.
                           
 ************* Real-Time -- Optimized Connection Parameters **************
+  --region=location       Optional. Specify the location to connect within the cloud.
+	                        Eg: ap-northeast-1 (Asia) eu-west-1 (EU) us-east-2 (US). Default: us-east-1
+
 **** Version 1 Authentication >
   --machineId=machine ID  Required. Real-Time -- Optimized Machine ID/User required for OAuth Password Grant.
                           Eg: GE-A-00000000-1-8888
@@ -74,11 +78,13 @@ Options:
                           Eg: Sunshine_1_UserPass
   --appKey=App Key        Required. Real-Time -- Optimized AppKey or Client ID required for server authentication.
                           Eg: x888x8x88888888x88888x88x8888xx88x88888x
+
 **** Version 2 Authentication >
   --clientId=Client ID    Required. Real-Time -- Optimized Client/Service Account ID required for OAuth Client Credentials.
                           Eg: GE-XXXXXXXXXXXX
   --clientSecret=secret   Required. Real-Time -- Optimized Client secret required for OAuth Client Credentials.
                           Eg: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
 
   --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.
                           Default: SpeedGuide provides a file for convenience.
@@ -93,3 +99,5 @@ If neither the required parameters for the ADS or Real-Time -- Optmized are spec
 Example:
   > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
   > SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+  > SpeedGuide.exe --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
+

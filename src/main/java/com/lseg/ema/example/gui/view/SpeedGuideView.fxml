@@ -13,11 +13,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="layout" minHeight="350.0" minWidth="620.0" prefHeight="850.0" prefWidth="850.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lseg.ema.example.gui.view.SpeedGuideViewController">
+<AnchorPane fx:id="layout" minHeight="350.0" minWidth="620.0" prefHeight="900.0" prefWidth="900.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lseg.ema.example.gui.view.SpeedGuideViewController">
    <fx:define>
        <Image fx:id="homeImage" url="@mbri-home2.png" />
        <Image fx:id="nextImage" url="@mbri-right.png" />
@@ -26,7 +27,7 @@
    <children>
       <VBox prefHeight="70.0" prefWidth="730.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="46.0" prefWidth="730.0">
+            <HBox id="Header" prefHeight="46.0" prefWidth="730.0">
                <children>
                   <Label contentDisplay="CENTER" minWidth="200.0" prefHeight="35.0" prefWidth="306.0" text="Guide to LSEG Market Data" HBox.hgrow="ALWAYS">
                      <font>
@@ -43,58 +44,74 @@
                      </HBox.margin>
                   </Label>
                </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" minWidth="700.0" prefHeight="32.0" prefWidth="730.0" spacing="5.0">
+            <HBox minWidth="700.0" prefHeight="32.0" prefWidth="730.0" spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="home" mnemonicParsing="false" onAction="#clickedHome" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
+                  <Button fx:id="home" mnemonicParsing="false" onAction="#clickedHome" prefHeight="29.0" prefWidth="34.0">
                      <graphic>
-                     	<ImageView>
+                     	<ImageView fitHeight="21.0" fitWidth="19.0">
                            <image>
-                              <Image url="@/images/mbri-home.png" />
-                           </image></ImageView>
+                              <Image url="@images/mbri-home.png" />
+                           </image>
+                        </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="previous" mnemonicParsing="false" onAction="#clickedPrevious" text="">
+                  <Button fx:id="previous" mnemonicParsing="false" onAction="#clickedPrevious" prefHeight="24.0" prefWidth="32.0" text="">
                      <graphic>
-                     	<ImageView>
+                     	<ImageView fitHeight="21.0" fitWidth="16.0">
                            <image>
-                              <Image url="@/images/mbri-left.png" />
-                           </image></ImageView>
+                              <Image url="@images/mbri-left.png" />
+                           </image>
+                        </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="next" mnemonicParsing="false" onAction="#clickedNext" text="">
+                  <Button fx:id="next" mnemonicParsing="false" onAction="#clickedNext" prefHeight="24.0" prefWidth="31.0" text="">
                      <graphic>
-                     	<ImageView>
+                     	<ImageView fitHeight="21.0" fitWidth="15.0">
                            <image>
-                              <Image url="@/images/mbri-right.png" />
-                           </image></ImageView>
+                              <Image url="@images/mbri-right.png" />
+                           </image>
+                        </ImageView>
                      </graphic>
                   </Button>
-                  <TextField fx:id="ric" onAction="#enteredRic" prefHeight="30.0" prefWidth="150.0" promptText="ric">
+                  <TextField fx:id="ric" onAction="#enteredRic" prefHeight="30.0" prefWidth="124.0" promptText="ric">
                      <font>
                         <Font size="14.0" />
-                     </font></TextField>
-                  <Button fx:id="submit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickedSubmit" prefHeight="30.0" prefWidth="64.0" text="Submit">
+                     </font>
+                  </TextField>
+                  <Button fx:id="submit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickedSubmit" prefHeight="30.0" prefWidth="68.0" text="Submit">
                      <font>
                         <Font size="13.0" />
-                     </font></Button>
-                  <Region prefHeight="25.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Region>
-                  <Label fx:id="servicesLabel" text="Available Services" />
-                  <ComboBox fx:id="services" onAction="#selectedService" prefHeight="30.0" prefWidth="153.0" />
-                  <Button fx:id="connect" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickedConnect" prefHeight="30.0" prefWidth="72.0" text="Connect">
-                     <font>
-                        <Font size="13.0" />
-                     </font></Button>
+                     </font>
+                  </Button>
+                  <HBox fx:id="regionsHBox" alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="270.0">
+                     <children>
+                        <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="100.0" text="RTO Region: " />
+                        <ComboBox fx:id="regions" onAction="#selectedRegion" prefHeight="30.0" prefWidth="172.0" />
+                     </children>
+                  </HBox>
+                  <StackPane alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="309.0">
+                     <children>
+                        <HBox fx:id="servicesHBox" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="336.0">
+                           <children>
+                              <Label fx:id="servicesLabel" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="138.0" text="Service: " textAlignment="CENTER" />
+                              <ComboBox fx:id="services" onAction="#selectedService" prefHeight="30.0" prefWidth="195.0" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="connectHBox" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="285.0" visible="false" StackPane.alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="connect" alignment="CENTER" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clickedConnect" prefHeight="30.0" prefWidth="89.0" text="Connect">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" />
