@@ -22,6 +22,8 @@ The package includes 2 components offering multiple ways to launch the tool.  Pa
 
   * **SpeedGuide.jar**: An executable JAR available for Windows, Mac or Linux
   * **SpeedGuide.exe**: A convenient windows wrapper
+
+**Note**: Because the package was built using JDK 1.8. which conveniently packages the JavaFx package, user must ensure they install Java 8 runtime.
 ### Launching the tool from the desktop (Windows):
 
 Double-clicking either the _.jar_ or _.exe_ file will not pass any required connection parameters to the application.  However, users can create a shortcut on their desktop and apply parameters there - see [Command-line Options](#Command-line-options) below.
