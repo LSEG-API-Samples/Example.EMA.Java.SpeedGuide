@@ -1,12 +1,12 @@
 # Speed Guide
-The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace/Eikon** desktop applications, a simple and quick way to easily browse market data content available within Refinitiv's Data Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and basic instructions to build the tool using the source code available within this project.
+The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace/Eikon** desktop applications, a simple and quick way to easily browse market data content available within LSEG Real-Time Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and basic instructions to build the tool using the source code available within this project.
 
 
 # Overview
 
-The Speed Guide utility allows users and developers who do not have access to the desktop application to browse market data content available from Refinitiv's Data Platform.  The utility provides access to either  cloud-based, Real-Time -- Optimized services or directly to your deployed Real-Time servers.
+The Speed Guide utility allows users and developers who do not have access to the desktop application to browse market data content available from LSEG Real-Time Platform.  The utility provides access to either  cloud-based, Real-Time -- Optimized services or directly to your deployed Real-Time servers.
 
-When building applications consuming streaming market data, developers often need a list of RICs (Refinitiv Instrument Codes), and the values they contain, for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
+When building applications consuming streaming market data, developers often need a list of RICs (Instrument Codes), and the values they contain, for certain market, exchange, or instrument types.  The list of fields provided for these instrument types will differ depending on the type of asset.  To aid in the discovery and understanding of these assets, the Speed Guide utility is a graphical tool presenting data screen displays.  These data screens, or ***speed guides***, help users navigate through the universe of RICs and list the fields available for the specific asset.  Developers will be presented with a simple organization of the data to gain a better understanding which includes complex structures such as Option Chains, Indices, Futures, etc.
 
 The Speed Guide tool registers for Snapshot only data content (i.e, non-streaming).
 
@@ -16,7 +16,7 @@ The executable program and Readme is available for Download within the [LSEG Dev
 
 ## Running the Utility
 
-The Speed Guide utility provides the ability to connect directly to the Refinitiv Data Platform, via Refinitiv Real-Time -- Optimized or access through your deployed Real-Time streaming server (ADS) available within the Refinitiv RTDS (Real-Time Distribution System).
+The Speed Guide utility provides the ability to connect directly to the Real-Time -- Optimized (RTDS) or access through your deployed Real-Time streaming server (ADS) available within the RTDS (Real-Time Distribution System).
 
 The package includes 2 components offering multiple ways to launch the tool.  Packaged are:
 
@@ -30,7 +30,7 @@ Double-clicking either the _.jar_ or _.exe_ file will not pass any required conn
 
 If the required parameters are not specified, the application will present a [Connection Dialog](#usage) requesting for the required connection details.  In either case, no console is involved thus no additional messages, such as log messages, can be viewed.
 
-**Note**: Launching the executable JAR requires the [Javaw](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html) program to open it.  When not associated, you will be presented with a request such as:
+**Note**: Launching the executable JAR requires the [Java Web Start](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/) (javaw) program to open it.  When not associated, you will be presented with a request such as:
 
 ![program](images/jarExtension.png)
 
@@ -38,13 +38,28 @@ You will need to choose the Javaw program within your Java installation.
 
 ### Launching the tool from the console
 
+Before running, please download the [JavaFX library](https://openjfx.io/) version that matches to your Java version to your machine. You can see the JDK and JavaFX compatibility information [here](https://gluonhq.com/products/javafx/).
+
 At the console, you can pass command-line parameters to the utility:
 
 * #### Launching the executable JAR
 
-  \> **java -jar SpeedGuide.jar [connection parameters]**
+  \> **java --module-path ".\javafx-sdk-version\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" [connection parameters]** 
+
+  Or
+
+  \> **java -cp ./SpeedGuide.jar --module-path ./javafx-sdk-version/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics com.lseg.ema.example.gui.SpeedGuide [connection parameters]**
   
   When launching the executable JAR, users optionally specify command-line options and have the opportunity to see the output on the console.
+
+  Example:
+
+  ```bash
+  java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" - --host=MY_ADS:14002 --username=USER1 --service=ELEKTRON_DD
+  ```
+
+  ![example](images/run_speedguide.png)
+
 	
 * #### Launching the windows wrapper EXE
   
@@ -162,35 +177,39 @@ To demonstrate, we manually entered the Nasdaq Top 25 index _.AV.O_:
 
 We can see from above, the record contains a preset number of elements (1-14) and the ability to pull up the next group of elements within the _next link_.  For a detailed outline of Chains, refer to the article: [Simple Chain Objects](https://developers.lseg.com/article/simple-chain-objects-ema-part-1) within the Developer Community.
 
-Feel free to navigate through the guide to discover many other assets and data elements offered by Refinitiv.
+Feel free to navigate through the guide to discover many other assets and data elements offered by LSEG.
 
 # Solution Code
 
-The utility was developed using the [Refinitiv Real-Time SDK - Java](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java) and Java's GUI library Java 8 - JavaFx.
+The utility was developed using the [Real-Time SDK - Java](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java) and Java's GUI library Java - JavaFx.
 
 ## Prerequisites
 
 Required software components:
 
-* [Refinitiv Real-Time SDK - Java](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java) (2.0.1.L1 or greater) - Refinitiv interface to streaming, real-time services.
-* [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java Development Kit - version 8.
+* [Real-Time SDK - Java edition](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java) (2.0.1.L1 or greater) - LSEG Enterprise Message API to streaming, real-time services.
+* Supported Java SDKs - Required to build and run the application. Please check supported SDK versions from the [API Compatibility Matrix](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#api-compatibility-matrix) page.
+* [JavaFX library](https://openjfx.io/) - Required for the JavaFX UI components used by this project. Please choose the version that matches to your Java version. You can see the JDK and JavaFX compatibility information [here](https://gluonhq.com/products/javafx/).
+  Note: Java FX has been removed from the Java SDK by oracle since April 15, 2025 (Java 8 update 451). 
 * [VScode](https://code.visualstudio.com/Download) - Visual Studio Code
 
 
 ## Building and running
 
-The Java FXML project is a Maven-based solution that generates the desired package for distribution.  As defined within the pom.xml configuration file, the packaging uses
-the Launch4j plugin to help prepare a Windows package.  Users can optionally remove this stanza if there is no desire to generate an EXE file for Windows.  If
-there is a desire to use this plugin, it assumes the following JDK installation (Note: you can update to suit your environment)
+The Java FXML project is a Maven-based solution that generates a bundled distribution package using:
 
-```
-  <jre>
-      <path>C:\Program Files\Common Files\Oracle\javapath</path>                            
-      <minVersion>1.8.0</minVersion>
-  </jre>
+* `maven-shade-plugin` to build the executable JAR with dependencies.
+* `jlink` to generate a local runtime image that includes JavaFX modules.
+* `launch4j-maven-plugin` to build a Windows EXE that points to the bundled runtime folder.
+* `maven-assembly-plugin` to zip the JAR, EXE, and runtime image for distribution.
+
+Build the package using:
+
+```bash
+mvn clean package
 ```
 
-The project was built using VS Code and Maven.
+After packaging, the generated ZIP contains `SpeedGuide.jar`, `SpeedGuide.exe`, and a `runtime/` folder required by the EXE.
 
 ## Contributing
 
@@ -200,6 +219,8 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 | **Name** | **Release** | **Details** |
 | --- | --- | --- |
+| Wasin Waeosri | Release 4.1.0 | Add JavaFX information when run jar file |
+|  |  | Add JavaFX dependencies to pom.xml |
 | Nick Zincone | Release 4.1.0 | Ability to specify region |
 |  |  | Default service based on Directory interrogation |
 | Nick Zincone | Release 4.0.0 | Added access to Real-Time -- Optimized v2 authentication. Rebranded (LSEG) |
