@@ -1,5 +1,5 @@
 # Speed Guide
-The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace/Eikon** desktop applications, a simple and quick way to easily browse market data content available within LSEG Real-Time Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and basic instructions to build the tool using the source code available within this project.
+The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace** desktop applications, a simple and quick way to easily browse market data content available within LSEG Real-Time Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and basic instructions to build the tool using the source code available within this project.
 
 
 # Overview
@@ -52,11 +52,7 @@ At the console, you can pass command-line parameters to the utility:
   
   When launching the executable JAR, users optionally specify command-line options and have the opportunity to see the output on the console.
 
-  Example:
-
-  ```bash
-  java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" - --host=MY_ADS:14002 --username=USER1 --service=ELEKTRON_DD
-  ```
+  See examples below.
 
   ![example](images/run_speedguide.png)
 
@@ -111,8 +107,11 @@ At the console, you can pass command-line parameters to the utility:
          
     --d[ebug]               Debug Mode.  Display verbose messages to the console
     --h[elp]                Prints this screen
+
 The following example shows the command-line parameters to connect to either an ADS or directly to Real-Time -- Optimized in the cloud.
 
+* java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" --host=MY_ADS:14002 --username=USER1 --service=ELEKTRON_DD
+* java -cp ./SpeedGuide.jar --module-path ./javafx-sdk-21.0.10/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics com.lseg.ema.example.gui.SpeedGuide --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99 --region=ap-northeast-1
 * SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
 * SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
 * SpeedGuide.exe --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
