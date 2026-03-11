@@ -4,9 +4,9 @@ The Speed Guide utility allows users and developers, who do not have access to *
 
 #### Important Note
 
-This Speed Guide tool is intended solely for demonstration and data exploration purposes and must not be deployed in any production environment. It is provided "AS IS," without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. No service level agreement (SLA), product support, or maintenance obligations are provided or implied. 
+**This Speed Guide tool is intended solely for demonstration and data exploration purposes and must not be deployed in any production environment. It is provided "AS IS," without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. No service level agreement (SLA), product support, or maintenance obligations are provided or implied.** 
 
-If you have any questions regarding how to use the tool, please post the question on the Developer Portal [Q&A forum](https://community.developers.lseg.com/) page.
+**If you have any questions regarding how to use the tool, do not contact the Support team but please post the question on the Developer Portal [Q&A forum](https://community.developers.lseg.com/) page.**
 
 ## Overview
 
@@ -218,7 +218,7 @@ After packaging, the generated ZIP contains `SpeedGuide.jar`, `SpeedGuide.exe`, 
 
 ## Troubleshooting
 
-As I have mentioned above. This tool is provided "as" with no service level agreement (SLA). If you have any questions regarding how to use the tool, please post the question on the Developer Portal [Q&A forum](https://community.developers.lseg.com/) page.
+**As I have mentioned above. This tool is provided "as" with no service level agreement (SLA). If you have any questions regarding how to use the tool, please post the question on the Developer Portal [Q&A forum](https://community.developers.lseg.com/) page.**
 
 ## Contributing
 
