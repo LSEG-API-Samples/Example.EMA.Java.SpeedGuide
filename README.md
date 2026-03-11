@@ -1,8 +1,14 @@
 # Speed Guide
+
 The Speed Guide utility allows users and developers, who do not have access to **LSEG Workspace** desktop applications, a simple and quick way to easily browse market data content available within LSEG Real-Time Platform.  The following guide outlines the fundamental purpose of speed guides and provides basic instructions to use the utility.  In addition, outlines the components and basic instructions to build the tool using the source code available within this project.
 
+#### Important Note
 
-# Overview
+This Speed Guide tool is intended solely for demonstration and data exploration purposes and must not be deployed in any production environment. It is provided "AS IS," without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. No service level agreement (SLA), product support, or maintenance obligations are provided or implied. 
+
+If you have any questions regarding how to use the tool, please post the question on the Developer Portal [Q&A forum](https://community.developers.lseg.com/) page.
+
+## Overview
 
 The Speed Guide utility allows users and developers who do not have access to the desktop application to browse market data content available from LSEG Real-Time Platform.  The utility provides access to either  cloud-based, Real-Time -- Optimized services or directly to your deployed Real-Time servers.
 
@@ -210,6 +216,10 @@ mvn clean package
 
 After packaging, the generated ZIP contains `SpeedGuide.jar`, `SpeedGuide.exe`, and a `runtime/` folder required by the EXE.
 
+## Troubleshooting
+
+As I have mentioned above. This tool is provided "as" with no service level agreement (SLA). If you have any questions regarding how to use the tool, please post the question on the Developer Portal [Q&A forum](https://community.developers.lseg.com/) page.
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
@@ -218,8 +228,9 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 | **Name** | **Release** | **Details** |
 | --- | --- | --- |
-| Wasin Waeosri | Release 4.1.0 | Add JavaFX information when run jar file |
-|  |  | Add JavaFX dependencies to pom.xml |
+| Wasin Waeosri | Release 4.1.0 | Added JavaFX information when run jar file |
+|  |  | Added JavaFX dependencies to pom.xml |
+|  |  | Added information about Q&A forum and product non-SLA |
 | Nick Zincone | Release 4.1.0 | Ability to specify region |
 |  |  | Default service based on Directory interrogation |
 | Nick Zincone | Release 4.0.0 | Added access to Real-Time -- Optimized v2 authentication. Rebranded (LSEG) |
@@ -230,11 +241,6 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 | Nick Zincone | Release 2.0 | Additional error checking |
 |  |  | Utilized JavaFX Scene Builder to generate FXML |
 | Susana Chang | Release 1.1 | Initial implementation |
-
-
-
-
-
 
 ## License
 
