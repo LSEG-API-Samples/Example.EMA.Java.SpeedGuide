@@ -101,8 +101,13 @@ public class SpeedGuideConnection
 		public String _password = "";
 		public String _appKey = "";
 		public String _service = "";
-		public String _keystoreFile = "keystore.jks";	// Default location within the package
-		public String _keystorePasswd = "Welcome1";
+		//public String _keystoreFile = "keystore.jks";	// Default location within the package
+		//public String _keystorePasswd = "Welcome1";
+		/** It is optional to specify a keystore file and password if the user has one they wish to use.  
+		 * 	If not specified, the connection will attempt to use the default Java cacerts keystore.
+		 * */
+		public String _keystoreFile = "";	
+		public String _keystorePasswd = "";
 	}
 
 	public class RTO_V2Connection
@@ -141,8 +146,14 @@ public class SpeedGuideConnection
 		public String _clientId = "";
 		public String _clientSecret = "";
 		public String _service = "";
-		public String _keystoreFile = "keystore.jks";	// Within running directory
-		public String _keystorePasswd = "Welcome1";
+		//public String _keystoreFile = "keystore.jks";	// Default location within the package
+		//public String _keystorePasswd = "Welcome1";
+
+		/** It is optional to specify a keystore file and password if the user has one they wish to use.  
+		 * 	If not specified, the connection will attempt to use the default Java cacerts keystore.
+		 * */
+		public String _keystoreFile = "";	
+		public String _keystorePasswd = "";
 	}
 
 	Stage m_dialog = new Stage();

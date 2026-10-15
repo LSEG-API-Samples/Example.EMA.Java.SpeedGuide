@@ -204,8 +204,6 @@ Required software components:
 The Java FXML project is a Maven-based solution that generates a bundled distribution package using:
 
 * `maven-shade-plugin` to build the executable JAR with dependencies.
-* `jlink` to generate a local runtime image that includes JavaFX modules.
-* `launch4j-maven-plugin` to build a Windows EXE that points to the bundled runtime folder.
 * `maven-assembly-plugin` to zip the JAR, EXE, and runtime image for distribution.
 
 Build the package using:
@@ -228,6 +226,10 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 | **Name** | **Release** | **Details** |
 | --- | --- | --- |
+| Wasin Waeosri | Release 4.2.0 | Updated the built Java version to Java 11 (**As of Mar 202**) |
+|  |  | Updated RTSDK version to version 3.9.2 (**As of Mar 202**) |
+|  |  | Removed .exe built |
+|  |  | Removed keystore requirement |
 | Wasin Waeosri | Release 4.1.0 | Added JavaFX information when run jar file |
 |  |  | Added JavaFX dependencies to pom.xml |
 |  |  | Added information about Q&A forum and product non-SLA |

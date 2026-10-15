@@ -4,8 +4,10 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 
 import com.lseg.ema.example.gui.view.SpeedGuideConnection;
 import com.lseg.ema.example.gui.view.SpeedGuideViewController;
@@ -34,7 +36,7 @@ public class SpeedGuide extends Application
 	}
 
 	public static final String NEWLINE = System.getProperty("line.separator");
-	public static final String VER_CODE = "4.1.0";
+	public static final String VER_CODE = loadVersion();
     public SpeedGuideConsumer m_consumer = new SpeedGuideConsumer();
     private boolean m_debug = false;
 
@@ -72,6 +74,20 @@ public class SpeedGuide extends Application
 			e.printStackTrace();
 			stop();
 		}
+	}
+
+	// Filtered from the pom <version> at build time
+	private static String loadVersion() {
+		try (InputStream in = SpeedGuide.class.getResourceAsStream("/app.properties")) {
+			if (in != null) {
+				Properties props = new Properties();
+				props.load(in);
+				return props.getProperty("version", "unknown");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "unknown";
 	}
 
 	private static void renderSplashFrame(Graphics2D g, int height) {
