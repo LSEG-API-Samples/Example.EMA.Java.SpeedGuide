@@ -11,14 +11,12 @@
       <outputDirectory>/</outputDirectory> <!-- directory within the archive -->
       <includes>
         <include>${project.artifactId}.jar</include>
-        <include>${project.artifactId}.exe</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/src/main/distribution</directory> <!-- directory to include -->
       <outputDirectory>/</outputDirectory> <!-- directory within the archive -->
       <includes>
-        <include>*.jks</include> <!-- include JKS file -->
         <include>*.txt</include> <!-- include readme -->
       </includes>
     </fileSet>

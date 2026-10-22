@@ -6,7 +6,7 @@
 
     <groupId>com.lseg.ema.example.gui</groupId>
     <artifactId>SpeedGuide</artifactId>
-    <version>4.2.0</version>
+    <version>4.2.2</version>
     <organization>
         <name>London Stock Exchange</name>
     </organization>
@@ -33,11 +33,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -108,8 +110,6 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>com.lseg.ema.example.gui.SpeedGuide</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
