@@ -316,9 +316,18 @@ public class SpeedGuideConsumer implements Runnable
 		config.config(configDb);
 		config.consumerName("Consumer_1");
 		
+		//keyStoreFile is always keystore.jks
 		// Define keystore files used for encryption
-		config.tunnelingKeyStoreFile(keyStoreFile);
-		config.tunnelingKeyStorePasswd(keyStorePasswd);
+		if (keyStoreFile != null && !keyStoreFile.isEmpty()){
+			System.out.println("Using keystore file: " + keyStoreFile);
+			config.tunnelingKeyStoreFile(keyStoreFile);
+		}
+			
+		if (keyStorePasswd != null && !keyStorePasswd.isEmpty()){
+			System.out.println("Using keystore password: " + keyStorePasswd.replaceAll(".", "*"));
+			config.tunnelingKeyStorePasswd(keyStorePasswd);
+		}
+			
 		
 		// Register Consumer
 		registerConsumer(config);

@@ -6,47 +6,55 @@
 
     <groupId>com.lseg.ema.example.gui</groupId>
     <artifactId>SpeedGuide</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.2</version>
     <organization>
         <name>London Stock Exchange</name>
     </organization>
-    <inceptionYear>2017</inceptionYear>
+    <inceptionYear>2026</inceptionYear>
     <description>Tool to navigate LSEG SpeedGuide market data</description>    
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>17.0.18</javafx.version>
+        <rtsdk.version>3.10.1.0</rtsdk.version>
     </properties>
 
     <dependencies>
         <dependency>
         	<groupId>com.refinitiv.ema</groupId>
             <artifactId>ema</artifactId>
-            <version>3.7.2.0</version>
+            <version>${rtsdk.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>com.refinitiv.eta</groupId>
-            <artifactId>eta</artifactId>
-            <version>3.7.2.0</version>
-        </dependency> 
         
          <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/filtered-resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins> 
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -102,8 +110,6 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>com.lseg.ema.example.gui.SpeedGuide</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
@@ -154,45 +160,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                <artifactId>launch4j-maven-plugin</artifactId>
-                <version>2.4.1</version>
-                <executions>
-                    <execution>
-                        <id>l4j-clui</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>launch4j</goal>
-                        </goals>
-                        <configuration>
-                            <headerType>gui</headerType>
-                            <jar>${project.build.directory}/${project.artifactId}.jar</jar>
-                            <outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
-                            <classPath>
-                                <!-- Additional classpath entries -->
-                                <mainClass>com.lseg.ema.example.gui.SpeedGuide</mainClass>                                
-                            </classPath>
-                            <!-- <jre>
-                                <path>C:\Program Files\Java\jdk1.8.0_202</path>                            
-                                <minVersion>1.8.0</minVersion>
-                            </jre> -->
-                            <jre>
-                                <path>C:\Program Files\Common Files\Oracle\javapath</path>                            
-                                <minVersion>1.8.0</minVersion>
-                            </jre>
-                            <splash>
-                                <file>${project.basedir}/src/main/resources/SpeedGuide.bmp</file>
-                                <waitForWindow>true</waitForWindow>
-                                <timeout>10</timeout>
-                                <timeoutErr>true</timeoutErr>
-                            </splash>
-                            <icon>src/main/resources/LSEG Icon.ico</icon>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>            
+            </plugin>         
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.6.0</version>

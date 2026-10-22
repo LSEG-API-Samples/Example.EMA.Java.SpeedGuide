@@ -16,35 +16,64 @@ When building applications consuming streaming market data, developers often ne
 
 The Speed Guide tool registers for Snapshot only data content (i.e, non-streaming).
 
+## Prerequisites
+
+Required software components:
+
+* [Real-Time SDK - Java edition](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java) (2.0.1.L1 or greater) - LSEG Enterprise Message API to streaming, real-time services.
+* Supported Java SDKs - Required to build the application. Please check supported SDK versions from the [API Compatibility Matrix](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#api-compatibility-matrix) page.
+* [JavaFX library](https://openjfx.io/) SDK package ([download here](https://gluonhq.com/products/javafx/)) - Required for the JavaFX UI components used by this project. Please choose the version that matches to your Java version. You can see the JDK and JavaFX compatibility information [here](https://gluonhq.com/products/javafx/).
+  Note: Java FX has been removed from the Java SDK by oracle since April 15, 2025 (Java 8 update 451). 
+* [VScode](https://code.visualstudio.com/Download) - Visual Studio Code
+
+### JavaFX Installation Location For Running Application 
+
+Once you have downloaded the JavaFX SDK package from [JavaFX download page](https://gluonhq.com/products/javafx/), extract it into the project root, alongside `pom.xml`. For example:
+
+```text
+Example.EMA.Java.SpeedGuide/
+├── javafx-sdk-<version>/
+│   ├── lib/
+│   ├── legal/
+│   └── ...
+├── pom.xml
+└── README.md
+```
+
+The JavaFX SDK folder name may differ depending on the version you download (example: `javafx-sdk-17.0.18`, `javafx-sdk-21.0.13`, etc. ). Use that folder name in the `--module-path` argument, pointing to its `lib` directory (for example, `./javafx-sdk-17.0.18/lib`).
+
+### RTSDK and JavaFX SDK Setup For Building Application
+
+To build the application, set the Real-Time SDK (RTSDK) version and the JavaFX version in the `<properties>` section of the [pom.xml](pom.xml):
+
+```xml
+<properties>
+  ...
+  <javafx.version>17.0.18</javafx.version>
+  <rtsdk.version>3.10.1.0</rtsdk.version>
+</properties>
+```
+
+* `rtsdk.version`: the version of the Real-Time SDK - Java edition (`com.refinitiv.ema` dependency) to build against.
+* `javafx.version`: the JavaFX version to compile against. **It must match the version of the JavaFX SDK package you download** (for example, `17.0.18` for `javafx-sdk-17.0.18`), so that the application built with this version runs with that SDK.
+
+You can also override either value from the command line without editing the `pom.xml` (see [Building and running](#building-and-running)).
+
 ## Utility download
 
-The executable program and Readme is available for Download within the [LSEG Developer Platform](https://developers.lseg.com/en/tools-catalog/speedguide).
+The executable jar file and Readme is available for Download within the [LSEG Developer Platform](https://developers.lseg.com/en/tools-catalog/speedguide).
 
 ## Running the Utility
 
-The Speed Guide utility provides the ability to connect directly to the Real-Time -- Optimized (RTDS) or access through your deployed Real-Time streaming server (ADS) available within the RTDS (Real-Time Distribution System).
+The Speed Guide utility provides the ability to connect directly to the Real-Time -- Optimized (RTO) or access through your deployed Real-Time streaming server (ADS) available within the RTDS (Real-Time Distribution System).
 
-The package includes 2 components offering multiple ways to launch the tool.  Packaged are:
+The package includes **SpeedGuide.jar** file which is an executable JAR available for Windows and Linux.
 
-  * **SpeedGuide.jar**: An executable JAR available for Windows, Mac or Linux
-  * **SpeedGuide.exe**: A convenient windows wrapper
-
-**Note**: Because the package was built using JDK 1.8. which conveniently packages the JavaFx package, user must ensure they install Java 8 runtime.
-### Launching the tool from the desktop (Windows):
-
-Double-clicking either the _.jar_ or _.exe_ file will not pass any required connection parameters to the application.  However, users can create a shortcut on their desktop and apply parameters there - see [Command-line Options](#Command-line-options) below.
-
-If the required parameters are not specified, the application will present a [Connection Dialog](#usage) requesting for the required connection details.  In either case, no console is involved thus no additional messages, such as log messages, can be viewed.
-
-**Note**: Launching the executable JAR requires the [Java Web Start](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/) (javaw) program to open it.  When not associated, you will be presented with a request such as:
-
-![program](images/jarExtension.png)
-
-You will need to choose the Javaw program within your Java installation.
+**Note**: The project uses Java 11 as its baseline (`maven.compiler.source` and `maven.compiler.target` in `pom.xml`). Clients can build it with any Java SDK version supported by the selected Real-Time SDK and JavaFX versions; by default, Maven produces Java 11-compatible bytecode. JavaFX is not bundled, so install a JavaFX SDK compatible with the Java version used to run the application.
 
 ### Launching the tool from the console
 
-Before running, please download the [JavaFX library](https://openjfx.io/) version that matches to your Java version to your machine. You can see the JDK and JavaFX compatibility information [here](https://gluonhq.com/products/javafx/).
+Before running, please download the [JavaFX SDK package](https://gluonhq.com/products/javafx/#downloads) version that matches to your Java version to your machine. You can see the JDK and JavaFX compatibility information [here](https://gluonhq.com/products/javafx/). Extract the SDK into the same location as SpeedGuide.jar file.
 
 At the console, you can pass command-line parameters to the utility:
 
@@ -62,15 +91,6 @@ At the console, you can pass command-line parameters to the utility:
 
   ![example](images/run_speedguide.png)
 
-	
-* #### Launching the windows wrapper EXE
-  
-  \> **SpeedGuide.exe [options]**
-
-  The windows wrapper is strictly a GUI based facility that does not have an explicit console attached.  Thus, no output can be viewed on the console.  However, users can capture the output within a file.  for example:
-		
-  \> **SpeedGuide.exe>output.txt [connection parameters]**
-	
   
 #### Command-line Options
 
@@ -105,10 +125,10 @@ At the console, you can pass command-line parameters to the utility:
     --clientSecret=secret   Required. Real-Time -- Optimized Client secret required for OAuth Client Credentials.
                             Eg: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
-    --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.
-                            Default: SpeedGuide provides a file for convenience.
+    --keyStore=keystorefile Optional. A Java KeyStore (JKS) file to use for secure package exchange.
+                            Default: none. The default Java cacerts keystore is used.
     --keyStorePasswd=passwd Optional. Password associated with the specified keystore file.
-                            Default: SpeedGuide includes the password for the default keystore file.
+                            Default: none.
 
          
     --d[ebug]               Debug Mode.  Display verbose messages to the console
@@ -116,11 +136,11 @@ At the console, you can pass command-line parameters to the utility:
 
 The following example shows the command-line parameters to connect to either an ADS or directly to Real-Time -- Optimized in the cloud.
 
-* java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" --host=MY_ADS:14002 --username=USER1 --service=ELEKTRON_DD
+* java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" --host=MY_ADS:14002 --user=USER1 --service=ELEKTRON_DD
 * java -cp ./SpeedGuide.jar --module-path ./javafx-sdk-21.0.10/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics com.lseg.ema.example.gui.SpeedGuide --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99 --region=ap-northeast-1
-* SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
-* SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
-* SpeedGuide.exe --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
+* java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
+* java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+* java --module-path ".\javafx-sdk-17.0.18\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
 
 ## Usage
 
@@ -188,25 +208,29 @@ Feel free to navigate through the guide to discover many other assets and data e
 
 The utility was developed using the [Real-Time SDK - Java](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java) and Java's GUI library Java - JavaFx.
 
-## Prerequisites
-
-Required software components:
-
-* [Real-Time SDK - Java edition](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java) (2.0.1.L1 or greater) - LSEG Enterprise Message API to streaming, real-time services.
-* Supported Java SDKs - Required to build and run the application. Please check supported SDK versions from the [API Compatibility Matrix](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#api-compatibility-matrix) page.
-* [JavaFX library](https://openjfx.io/) - Required for the JavaFX UI components used by this project. Please choose the version that matches to your Java version. You can see the JDK and JavaFX compatibility information [here](https://gluonhq.com/products/javafx/).
-  Note: Java FX has been removed from the Java SDK by oracle since April 15, 2025 (Java 8 update 451). 
-* [VScode](https://code.visualstudio.com/Download) - Visual Studio Code
-
 
 ## Building and running
 
 The Java FXML project is a Maven-based solution that generates a bundled distribution package using:
 
 * `maven-shade-plugin` to build the executable JAR with dependencies.
-* `jlink` to generate a local runtime image that includes JavaFX modules.
-* `launch4j-maven-plugin` to build a Windows EXE that points to the bundled runtime folder.
-* `maven-assembly-plugin` to zip the JAR, EXE, and runtime image for distribution.
+* `maven-assembly-plugin` to zip the JAR and `README.txt` for distribution.
+
+The JavaFX dependencies in `pom.xml` use the `provided` scope, so JavaFX is used to compile but is not packaged into `SpeedGuide.jar`.  To build against a different JavaFX version, override the `javafx.version` property:
+
+Bash / Command Prompt:
+
+```bash
+mvn clean package -Djavafx.version=21.0.13
+```
+
+PowerShell:
+
+```powershell
+mvn clean package "-Djavafx.version=21.0.13"
+```
+
+**Note**: In PowerShell, wrap each `-D` property in double quotes. Without quotes, PowerShell splits the argument at the `.` and Maven fails with `Unknown lifecycle phase ".version=21.0.13"`.
 
 Build the package using:
 
@@ -214,7 +238,7 @@ Build the package using:
 mvn clean package
 ```
 
-After packaging, the generated ZIP contains `SpeedGuide.jar`, `SpeedGuide.exe`, and a `runtime/` folder required by the EXE.
+After packaging, the generated ZIP contains `SpeedGuide.jar` and `README.txt`.
 
 ## Troubleshooting
 
@@ -228,6 +252,11 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 | **Name** | **Release** | **Details** |
 | --- | --- | --- |
+| Wasin Waeosri | Release 4.2.2 | Updated the RTSDK, README, and Distribution package |
+| Wasin Waeosri | Release 4.2.0 | Updated the built Java version to Java 11 (**As of Mar 2026**) |
+|  |  | Updated RTSDK version to version 3.9.2 (**As of Mar 2026**) |
+|  |  | Removed .exe built |
+|  |  | Removed keystore requirement |
 | Wasin Waeosri | Release 4.1.0 | Added JavaFX information when run jar file |
 |  |  | Added JavaFX dependencies to pom.xml |
 |  |  | Added information about Q&A forum and product non-SLA |
