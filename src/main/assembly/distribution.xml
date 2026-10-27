@@ -10,7 +10,8 @@
       <directory>${project.build.directory}</directory> <!-- directory to include -->
       <outputDirectory>/</outputDirectory> <!-- directory within the archive -->
       <includes>
-        <include>${project.artifactId}.jar</include>
+        <include>${project.artifactId}-win.jar</include>
+        <include>${project.artifactId}-linux.jar</include>
       </includes>
     </fileSet>
     <fileSet>

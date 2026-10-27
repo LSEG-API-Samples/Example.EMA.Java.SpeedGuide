@@ -11,8 +11,10 @@ Note: While the utility will launch the "REFINITIV" RIC, which represents the ro
 The user is presented with a basic window allowing the selection of navigation items, as identified by values within <> brackets,
 or to input items manually.
 
-The package includes the SpeedGuide.jar file, an executable JAR available for both Windows and Linux.  JavaFX is not bundled
-within the JAR.
+The package includes two executable JAR files with JavaFX bundled, so no JavaFX SDK installation is required:
+
+  o SpeedGuide-win.jar    - Windows (x64)
+  o SpeedGuide-linux.jar  - Linux (x86_64)
 
 Prerequisites:
 ==============
@@ -21,13 +23,7 @@ Prerequisites:
     See the API Compatibility Matrix for the supported versions:
     https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#api-compatibility-matrix
 
-  o A JavaFX SDK that matches your Java version (https://gluonhq.com/products/javafx/#downloads).  Extract it into the same folder as
-    SpeedGuide.jar.  The folder name depends on the version you download (for example, javafx-sdk-17.0.18 or javafx-sdk-21.0.13):
-
-        SpeedGuide.jar
-        javafx-sdk-<version>/
-            lib/
-            ...
+  o Linux only: a desktop environment with the GTK 3 libraries installed (for example, the libgtk-3-0 package).
 
 
 Launching the tool from the console:
@@ -36,14 +32,18 @@ Launching the tool from the console:
 At the console, you can pass command-line parameters to the utility:
 
 	o Launching the executable JAR
-		> java --module-path ".\javafx-sdk-<version>\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar ".\SpeedGuide.jar" [options]
+		Windows > java -jar ".\SpeedGuide-win.jar" [options]
+
+		Linux   > java -jar ./SpeedGuide-linux.jar [options]
 
 		Or
 
-		> java -cp ./SpeedGuide.jar --module-path ./javafx-sdk-<version>/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics com.lseg.ema.example.gui.SpeedGuide [options]
+		> java -cp ./SpeedGuide-linux.jar com.lseg.ema.example.gui.SpeedGuideLauncher [options]
 
-		Set --module-path to the lib folder of your JavaFX SDK.  When no connection options are specified, the application
-		presents a Connection Dialog requesting them.
+		When no connection options are specified, the application presents a Connection Dialog requesting them.
+
+		JavaFX prints the warning "Unsupported JavaFX configuration: classes were loaded from 'unnamed module'" at startup.
+		It is expected and can be ignored.
 
 Console output will provide additional log messages, and if the user specifies the --d[ebug] option on the command-line,
 additional debug details.  These messages can be useful to better understand connection details, messages returned, etc.
@@ -95,8 +95,8 @@ Options:
 
 If neither the required parameters for the ADS or Real-Time -- Optimized are specified, the utility will prompt the user.
 
-Example (<javafx> = --module-path "./javafx-sdk-<version>/lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics):
-  > java <javafx> -jar SpeedGuide.jar --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
-  > java <javafx> -jar SpeedGuide.jar --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
-  > java <javafx> -jar SpeedGuide.jar --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
+Example (use SpeedGuide-linux.jar on Linux):
+  > java -jar SpeedGuide-win.jar --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
+  > java -jar SpeedGuide-win.jar --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+  > java -jar SpeedGuide-win.jar --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
 

@@ -163,8 +163,8 @@ public class SpeedGuide extends Application
     		 params.getNamed().containsKey("h") || params.getNamed().containsKey("help"))
     	{
     		System.out.println(NEWLINE+"Syntax:"+NEWLINE);
-    		System.out.println("  > java --module-path <javafx-sdk-version>/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar SpeedGuide.jar [options]"+NEWLINE);
-    		System.out.println("  JavaFX is not bundled. Set --module-path to the lib folder of your JavaFX SDK, Eg: ./javafx-sdk-17.0.18/lib"+NEWLINE);
+    		System.out.println("  Windows > java -jar SpeedGuide-win.jar [options]");
+    		System.out.println("  Linux   > java -jar SpeedGuide-linux.jar [options]"+NEWLINE);
     		System.out.println("Options:"+NEWLINE);
 			System.out.println("  --service=serviceName   Optional. Service Name providing market data content.");
 			System.out.println("                          Eg: ELEKTRON_DD. Default: Determined from Directory response.");
@@ -204,10 +204,10 @@ public class SpeedGuide extends Application
 			System.out.println("  --h[elp]                Prints this screen"+NEWLINE);
 			System.out.println("If neither the required parameters for the ADS or Refinitiv Real-Time -- Optimized parameters are specified, the utility will prompt the user.");
 			System.out.println(NEWLINE);
-			System.out.println("Example (<javafx> = --module-path ./javafx-sdk-17.0.18/lib --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics):");
-			System.out.println("  > java <javafx> -jar SpeedGuide.jar --host=myserver:14002 --service=ELEKTRON_DD --user=testuser --appid=256 --position=127.0.0.1");
-			System.out.println("  > java <javafx> -jar SpeedGuide.jar --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass --appKey=x888x8x88888888x88888x88x8888xx88x88888x");
-			System.out.println("  > java <javafx> -jar SpeedGuide.jar --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1");
+			System.out.println("Example (use SpeedGuide-linux.jar on Linux):");
+			System.out.println("  > java -jar SpeedGuide-win.jar --host=myserver:14002 --service=ELEKTRON_DD --user=testuser --appid=256 --position=127.0.0.1");
+			System.out.println("  > java -jar SpeedGuide-win.jar --machineId=GE-A-00000000-1-8888 --password=Sunshine_1_UserPass --appKey=x888x8x88888888x88888x88x8888xx88x88888x");
+			System.out.println("  > java -jar SpeedGuide-win.jar --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1");
     		stop();
     	}
 

@@ -6,7 +6,7 @@
 
     <groupId>com.lseg.ema.example.gui</groupId>
     <artifactId>SpeedGuide</artifactId>
-    <version>4.2.2</version>
+    <version>4.3.0</version>
     <organization>
         <name>London Stock Exchange</name>
     </organization>
@@ -29,17 +29,62 @@
         </dependency>
         
         
-         <dependency>
+        <!-- JavaFX for both platforms; each shade execution keeps only one. Transitives excluded so the build host's platform does not leak in. -->
+        <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
+            <artifactId>javafx-base</artifactId>
             <version>${javafx.version}</version>
-            <scope>provided</scope>
+            <classifier>win</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>win</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <scope>provided</scope>
+            <classifier>win</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>win</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
+            <exclusions><exclusion><groupId>org.openjfx</groupId><artifactId>*</artifactId></exclusion></exclusions>
         </dependency>
     </dependencies>
 
@@ -110,7 +155,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.lseg.ema.example.gui.SpeedGuide</mainClass>
+                            <mainClass>com.lseg.ema.example.gui.SpeedGuideLauncher</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
@@ -125,42 +170,64 @@
                 <version>3.5.1</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                </configuration>                
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <manifestEntries>
+                                <Main-Class>com.lseg.ema.example.gui.SpeedGuideLauncher</Main-Class>
+                                <Build-Number>1.0</Build-Number>
+                            </manifestEntries>
+                        </transformer>
+                    </transformers>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>META-INF/versions/9/module-info.class</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/LICENSE*</exclude>
+                                <exclude>META-INF/NOTICE*</exclude>
+                                <exclude>META-INF/DEPENDENCIES</exclude>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>shade-win</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>com.lseg.ema.example.gui.SpeedGuide</Main-Class>
-                                        <Build-Number>1.0</Build-Number>
-                                    </manifestEntries>
-                                </transformer>
-                            </transformers>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>module-info.class</exclude>
-                                        <exclude>META-INF/versions/9/module-info.class</exclude>                                        
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                        <exclude>META-INF/LICENSE*</exclude>
-                                        <exclude>META-INF/NOTICE*</exclude>
-                                        <exclude>META-INF/DEPENDENCIES</exclude>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>                            
+                            <outputFile>${project.build.directory}/${project.artifactId}-win.jar</outputFile>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.openjfx:*:jar:linux</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>shade-linux</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.directory}/${project.artifactId}-linux.jar</outputFile>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.openjfx:*:jar:win</exclude>
+                                </excludes>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>         
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.6.0</version>
