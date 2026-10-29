@@ -11,20 +11,19 @@ Note: While the utility will launch the "REFINITIV" RIC, which represents the ro
 The user is presented with a basic window allowing the selection of navigation items, as identified by values within <> brackets,
 or to input items manually.
 
-The package includes 2 components offering multiple ways to launch the tool.  Packaged are:
+The package includes two executable JAR files with JavaFX bundled, so no JavaFX SDK installation is required:
 
-	- SpeedGuide.jar: An executable JAR available for both Windows and Linux
-	- SpeedGuide.exe: A windows wrapper
+  o SpeedGuide-win.jar    - Windows (x64)
+  o SpeedGuide-linux.jar  - Linux (x86_64)
 
-Launching the tool by double clicking on the icon (Windows):
-============================================================
+Prerequisites:
+==============
 
-Double-clicking either the .jar or .exe file will not pass any required parameters to the application.  As such, the application
-will present a Connection Dialog requesting for these connection parameters.  In either case, no console is involved thus no
-additional messages, such as log messages, can be viewed.
+  o A Java SDK supported by the Real-Time SDK - Java edition.  The project is built with Java 11 as its baseline.
+    See the API Compatibility Matrix for the supported versions:
+    https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#api-compatibility-matrix
 
-Note: Launching the executable JAR requires the Javaw (https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html) 
-program to open it.  When not associated, you will be presented with a request to select a program.
+  o Linux only: a desktop environment with the GTK 3 libraries installed (for example, the libgtk-3-0 package).
 
 
 Launching the tool from the console:
@@ -33,18 +32,18 @@ Launching the tool from the console:
 At the console, you can pass command-line parameters to the utility:
 
 	o Launching the executable JAR
-		> java -jar SpeedGuide.jar [options]
+		Windows > java -jar ".\SpeedGuide-win.jar" [options]
 
-		When launching the executable JAR, users optionally specify command-line options and have the opportunity to see
-		the output on the console.
+		Linux   > java -jar ./SpeedGuide-linux.jar [options]
 
-	o Launching the windows wrapper EXE
-		> SpeedGuide.exe [options]
+		Or
 
-		The windows wrapper is strictly a GUI based facility that does not have an explicit console attached.  Thus, no
-		output can be viewed on the console.  However, users can capture the output within a file.  for example:
+		> java -cp ./SpeedGuide-linux.jar com.lseg.ema.example.gui.SpeedGuideLauncher [options]
 
-		> SpeedGuide.exe>output.txt [options]
+		When no connection options are specified, the application presents a Connection Dialog requesting them.
+
+		JavaFX prints the warning "Unsupported JavaFX configuration: classes were loaded from 'unnamed module'" at startup.
+		It is expected and can be ignored.
 
 Console output will provide additional log messages, and if the user specifies the --d[ebug] option on the command-line,
 additional debug details.  These messages can be useful to better understand connection details, messages returned, etc.
@@ -86,18 +85,18 @@ Options:
                           Eg: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 
-  --keyStore=keystorefile Optional. A Java KeyStore (JKS) required for secure package exchange.
-                          Default: SpeedGuide provides a file for convenience.
+  --keyStore=keystorefile Optional. A Java KeyStore (JKS) file to use for secure package exchange.
+                          Default: none. The default Java cacerts keystore is used.
   --keyStorePasswd=passwd Optional. Password associated with the specified keystore file.
-                          Default: SpeedGuide includes the password for the default keystore file.
+                          Default: none.
 
   --d[ebug]               Debug Mode.  Display verbose messages to the console
   --h[elp]                Prints this screen
 
-If neither the required parameters for the ADS or Real-Time -- Optmized are specified, the utility will prompt the user.
+If neither the required parameters for the ADS or Real-Time -- Optimized are specified, the utility will prompt the user.
 
-Example:
-  > SpeedGuide.exe --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
-  > SpeedGuide.exe --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
-  > SpeedGuide.exe --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
+Example (use SpeedGuide-linux.jar on Linux):
+  > java -jar SpeedGuide-win.jar --host=myserver:14002 --service=ELEKTRON_AD --user=testuser --appid=256 --position=127.0.0.1
+  > java -jar SpeedGuide-win.jar --clientId=GE-XXXX1234XXXX --clientSecret=9x999999-9xxx-9999-9x99-9x9xx99x9x99
+  > java -jar SpeedGuide-win.jar --clientId=GE-123X9ABCDE9Z --clientSecret=9z123456-9abc-5555-9a12-1a2bc34d5e67 --region=eu-west-1
 
